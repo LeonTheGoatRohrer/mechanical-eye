@@ -1,0 +1,28 @@
+// Eye assembly driving parameters
+// Hardware interface placeholders are not measured dimensions and block manufacturing release.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+export centerHeight = 145mm
+export gazeYaw = 0deg
+export gazePitch = 0deg
+export blinkInput = 0deg
+export sectionReview = false
+export jointDiametralGap = 0.3mm
+export shellGapRadial = 2.6mm
+export lidGapRadial = 1.2mm
+export lidThickness = 2mm
+export lidTrimHalfWidth = 40.5mm
+export upperArm = 20mm
+export lowerArm = 36mm
+export blinkCrankRadius = 16mm
+export blinkCenterDistance = 60mm
+export upperRodLength = sqrt(60mm * 60mm + 4mm * 4mm)
+export lowerRodLength = sqrt(60mm * 60mm + 60mm * 60mm)
+export yawReviewLimit = 25deg
+export pitchReviewLimit = 15deg
+export hornHoleRadiusUnverified = 9mm
+export hornThicknessUnverified = 2.5mm
+export xtBodyLengthUnverified = 45mm
+export xtBodyWidthUnverified = 25mm
+export xtBodyHeightUnverified = 45mm
+export xtAxisHeightUnverified = 0mm

@@ -1,0 +1,12 @@
+// Trunnion assembly collar
+// Holds the two split white half-shafts together; M2 cross bolt, replaceable sleeve.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import sleeve from "mechanismProfiles.kcl"
+import cylinder from "profiles.kcl"
+blank = sleeve(outerDiameter = 12mm, innerDiameter = 8.3mm, length = 7mm)
+crossBore = cylinder(radiusValue = 1.1mm, height = 16mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(y = 8mm, z = 3.5mm, global = true)
+trunnionCollar = subtract([blank], tools = [crossBore])
+  |> appearance(color = "#29292D")

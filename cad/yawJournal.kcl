@@ -1,0 +1,22 @@
+// Independent yaw journal carrier
+// Two short journal lands with a relieved middle, rear bolted attachment.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+blank = plate(width = 36mm, depth = 58mm, height = 18mm)
+  |> translate(y = 16mm, global = true)
+bore = cylinder(radiusValue = 5.15mm, height = 20mm)
+  |> translate(z = -1mm, global = true)
+relief = cylinder(radiusValue = 7mm, height = 6mm)
+  |> translate(z = 6mm, global = true)
+boltA = cylinder(radiusValue = 2.2mm, height = 20mm)
+  |> translate(
+       x = -10mm,
+       y = 36mm,
+       z = -1mm,
+       global = true,
+     )
+boltB = clone(boltA)
+  |> translate(x = 20mm, global = true)
+yawJournal = subtract([blank], tools = [bore, relief, boltA, boltB])
+  |> appearance(color = "#303034")

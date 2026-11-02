@@ -1,0 +1,13 @@
+// Upper blink connecting rod
+// Exact closed-loop length for 60 mm centers and 16/20 mm arms in neutral.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+import upperRodLength from "assemblyParameters.kcl"
+upperBlinkRod = link(
+  pitch = upperRodLength,
+  width = 8mm,
+  thickness = 3mm,
+  boreDiameter = 4.3mm,
+)
+  |> appearance(color = "#29292D")

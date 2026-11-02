@@ -1,0 +1,30 @@
+// Eye development parameters
+// Dimensions in millimeters; unverified hardware remains explicitly provisional.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+export eyeRadius = 40mm
+export eyeWall = 1.8mm
+export eyeCenterHeight = 112mm
+export lidRadialClearance = 1.5mm
+export lidWall = 1.6mm
+export lidInterlayerGap = 0.6mm
+export pivotDiametralClearance = 0.3mm
+export bearingOuterDiameter = 22mm
+export bearingInnerDiameter = 9mm
+export bearingWidthProvisional = 7mm
+export bearingSeatDiametralClearance = 0.2mm
+export hitecBodyLength = 40mm
+export hitecBodyWidth = 20mm
+export hitecBodyHeight = 36.5mm
+export hitecMountPitchLong = 47.8mm
+export hitecMountPitchWide = 10.2mm
+export hitecFlangeLength = 52.8mm
+export hitecFlangeUnderside = 26.5mm
+export hitecAxisFromLeftMount = 33.9mm
+export xtLengthProvisional = 45mm
+export xtWidthProvisional = 25mm
+export xtHeightProvisional = 45mm
+export xtMountPitchProvisional = 54mm
+export nozzleAssumed = 0.4mm
+export yawTarget = 30deg
+export pitchTarget = 20deg

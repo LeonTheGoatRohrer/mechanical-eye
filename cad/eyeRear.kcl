@@ -1,0 +1,6 @@
+// White rear globe
+// Companion half; rotate 180 degrees around X in the assembly.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import globeHalf from "globeProfiles.kcl"
+eyeRear = globeHalf(pupilOpening = false)

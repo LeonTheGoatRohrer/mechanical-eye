@@ -1,0 +1,88 @@
+// Globe carrier and camera shelf
+// Opposed pitch journals, four shell bolts and provisional 22 by 20 by 16 mm camera bay.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+frameBlank = plate(width = 62mm, depth = 27mm, height = 4mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(y = -14mm, z = 0.5mm, global = true)
+cornerTopRight = plate(width = 20mm, depth = 10mm, height = 20mm)
+  |> translate(z = -10mm, global = true)
+  |> rotate(axis = Y, angle = 45deg, global = true)
+  |> translate(
+       x = 37mm,
+       y = -16mm,
+       z = 3mm + 10mm * sqrt(2_),
+       global = true,
+     )
+cornerTopLeft = clone(cornerTopRight)
+  |> rotate(axis = Z, angle = 180deg, global = true)
+  |> translate(y = -32mm, global = true)
+cornerBottomRight = clone(cornerTopRight)
+  |> rotate(axis = X, angle = 180deg, global = true)
+  |> translate(y = -32mm, z = 1mm, global = true)
+cornerBottomLeft = clone(cornerBottomRight)
+  |> rotate(axis = Z, angle = 180deg, global = true)
+  |> translate(y = -32mm, global = true)
+frame = subtract(
+  [frameBlank],
+  tools = [
+    cornerTopRight,
+    cornerTopLeft,
+    cornerBottomRight,
+    cornerBottomLeft
+  ],
+)
+window = plate(width = 30mm, depth = 10mm, height = 20mm)
+  |> translate(y = -16mm, z = -10mm, global = true)
+ring = subtract([frame], tools = [window])
+podA = plate(width = 4mm, depth = 24mm, height = 14mm)
+  |> translate(
+       x = -18mm,
+       y = -6mm,
+       z = -7mm,
+       global = true,
+     )
+podB = clone(podA)
+  |> translate(x = 36mm, global = true)
+drivePost = plate(width = 4mm, depth = 22mm, height = 18mm)
+  |> translate(y = -7mm, z = 12mm, global = true)
+shelf = plate(width = 24mm, depth = 28mm, height = 2mm)
+  |> translate(y = -19mm, z = -11mm, global = true)
+blank = union([ring, podA, podB, drivePost, shelf])
+pitchA = cylinder(radiusValue = 2.15mm, height = 8mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -22mm, global = true)
+pitchB = clone(pitchA)
+  |> translate(x = 36mm, global = true)
+driveBore = cylinder(radiusValue = 1.6mm, height = 8mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -4mm, z = 26mm, global = true)
+boltA = cylinder(radiusValue = 1.1mm, height = 10mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = -28mm,
+       y = -12mm,
+       z = -8mm,
+       global = true,
+     )
+boltB = clone(boltA)
+  |> translate(x = 56mm, global = true)
+boltC = clone(boltA)
+  |> translate(z = 16mm, global = true)
+boltD = clone(boltA)
+  |> translate(x = 56mm, z = 16mm, global = true)
+cameraA = cylinder(radiusValue = 1.1mm, height = 4mm)
+  |> translate(
+       x = -8mm,
+       y = -20mm,
+       z = -12mm,
+       global = true,
+     )
+cameraB = clone(cameraA)
+  |> translate(x = 16mm, global = true)
+journalDrilled = subtract([blank], tools = [pitchA, pitchB])
+driveDrilled = subtract([journalDrilled], tools = [driveBore])
+shellDrilled = subtract([driveDrilled], tools = [boltA, boltB, boltC, boltD])
+eyeCarrier = subtract([shellDrilled], tools = [cameraA, cameraB])
+  |> appearance(color = "#242428")

@@ -1,0 +1,23 @@
+position,quantity,item,file,status,notes
+P01,2,Hitec-Montageplatte,hitecMount.kcl,CAD geprüft,schwarz; Gehäuse- und Befestigungsrastertest
+P02,2,Grundplatte,cradleBase.kcl,CAD geprüft,schwarz; noch nicht mit Augenständer verbunden
+P03,8,Distanzhülse24,cradleSpacer.kcl,CAD geprüft,schwarz; vier pro Modul
+T01,1,Passungscoupon,fitCoupon.kcl,CAD geprüft,schwarz; OD22 und vorgeschlagene4mm Gelenke
+T02,1,Testzapfen8.8,fitPin.kcl,CAD geprüft,schwarz; für angegebenen9mm Lagerinnenring
+H01,2,HS-325HB vorhanden,hitecReference.kcl,Referenzhülle,kein Druckteil; vorhandene runde Hörner weiterverwenden
+H02,1,XT Standard vorhanden,,offen,kein CAD-Körper und keine Aufnahme; keine Hitec-Gleichsetzung
+F01,8,M3x40 Durchgangsschraube,,Vorschlag,Modulsäulen; 32mm Klemmpaket plus Scheiben und Mutter prüfen
+F02,8,M3 Mutter,,Vorschlag,Modulsäulen
+F03,16,M3 Unterlegscheibe,,Vorschlag,Modulsäulen oben und unten
+F04,8,M3x12 Servoschraube,,Vorschlag,ohne Gummitüllen; tatsächliche Laschenbestückung prüfen
+F05,8,M3 Mutter,,Vorschlag,Servoaufnahme
+F06,16,M3 Unterlegscheibe,,Vorschlag,Servoaufnahme; ausreichende Auflage über4.5mm Ausschnitt
+S01,2,Weiße Halbkugelschale,eyeHemisphere.kcl,STUDIE NICHT FERTIG,keine Montageverbindung; Frontöffnung nur in Winkelstudie
+S02,1,Oberlidschale,upperLidStudy.kcl,STUDIE NICHT FERTIG,keine Lager oder Anlenkung
+S03,1,Unterlidschale,lowerLidStudy.kcl,STUDIE NICHT FERTIG,keine Lager oder Anlenkung
+S04,1,Pupillen-Kugelkappe,eyeMotionStudy.kcl,STUDIE NICHT FERTIG,kein Befestigungselement
+O01,offen,Lager22x9xB,,Nutzerhardware,Stückzahl und Breite messen; nicht als608 geführt
+O02,offen,Kardan und Lidgelenke,,NICHT KONSTRUIERT,Metallachsen nur nach Funktionsbewertung
+O03,offen,Gestänge und Originalhorn-Adapter,,NICHT KONSTRUIERT,keine Verzahnungen modelliert
+O04,1,XT Aufnahme,,NICHT KONSTRUIERT,Parameter nur Platzhalter
+O05,1,Tischständer und Front,,NICHT KONSTRUIERT,keine Standfestigkeitsprüfung

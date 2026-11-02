@@ -1,0 +1,6 @@
+// M3 nut reference
+// Simplified nominal hex envelope; verify purchased hardware, not a printed part.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import hexNut from "fastenerProfiles.kcl"
+nutM3 = hexNut(acrossFlats = 5.5mm, thickness = 2.4mm, boreDiameter = 3mm)

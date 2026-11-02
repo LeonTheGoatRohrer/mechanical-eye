@@ -1,0 +1,372 @@
+// Three-servo tabletop animatronic eye — assembled fixed-servo configuration
+// Internal gaze gimbal; original independent blink mechanism, table and XT reference retained.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import * from "assemblyParameters.kcl"
+import * from "blinkKinematics.kcl"
+import "gazeAssembly.kcl" as gazeAssembly
+import "tableBase.kcl" as basePart
+import "tableFoot.kcl" as footPart
+import "upperLid.kcl" as upperLidPart
+import "lowerLid.kcl" as lowerLidPart
+import "upperLidHub.kcl" as upperHubPart
+import "lowerLidHub.kcl" as lowerHubPart
+import "upperBlinkRod.kcl" as upperRodPart
+import "lowerBlinkRod.kcl" as lowerRodPart
+import "lidColumn.kcl" as columnPart
+import "blinkCrank.kcl" as blinkCrankPart
+import "xtReference.kcl" as xtPart
+import "xtHornReference.kcl" as xtHornPart
+import "xtSaddle.kcl" as saddlePart
+import "xtStrap.kcl" as strapPart
+import sleeve, screw from "mechanismProfiles.kcl"
+import boltedJoint, shoulderJoint from "hardwareSets.kcl"
+import hexNut from "fastenerProfiles.kcl"
+
+secondStrapBlank = clone(strapPart)
+base = translate(basePart, y = 20mm, global = true)
+upperShell = rotate(
+  upperLidPart,
+  axis = X,
+  angle = upperShellAngle,
+  global = true,
+)
+  |> translate(z = centerHeight, global = true)
+  |> appearance(
+       color = "#252529",
+       opacity = if sectionReview {
+      15_
+    } else {
+      100_
+    },
+     )
+lowerShell = rotate(
+  lowerLidPart,
+  axis = X,
+  angle = lowerShellAngle,
+  global = true,
+)
+  |> translate(z = centerHeight, global = true)
+  |> appearance(
+       color = "#252529",
+       opacity = if sectionReview {
+      15_
+    } else {
+      100_
+    },
+     )
+upperHub = rotate(
+  upperHubPart,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 64mm, global = true)
+  |> rotate(axis = X, angle = upperShellAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+lowerHub = rotate(
+  lowerHubPart,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 76.5mm, global = true)
+  |> rotate(axis = X, angle = lowerShellAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+upperRod = rotate(
+  upperRodPart,
+  axis = Z,
+  angle = upperRodAngle + 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 68.5mm,
+       y = upperOutputY,
+       z = centerHeight + upperOutputZ,
+       global = true,
+     )
+lowerRod = rotate(
+  lowerRodPart,
+  axis = Z,
+  angle = lowerRodAngle + 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 81mm,
+       y = lowerOutputY,
+       z = centerHeight + lowerOutputZ,
+       global = true,
+     )
+blinkCrank = rotate(
+  blinkCrankPart,
+  axis = Z,
+  angle = inputAngle + 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 84.5mm,
+       y = 60mm,
+       z = centerHeight,
+       global = true,
+     )
+xtHorn = rotate(
+  xtHornPart,
+  axis = Z,
+  angle = inputAngle + 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 88.5mm,
+       y = 60mm,
+       z = centerHeight,
+       global = true,
+     )
+xtServo = rotate(
+  xtPart,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = -90deg, global = true)
+  |> translate(
+       x = 139mm,
+       y = 60mm,
+       z = centerHeight,
+       global = true,
+     )
+xtSupport = translate(
+  saddlePart,
+  x = 116.5mm,
+  y = 60mm,
+  z = 6mm,
+  global = true,
+)
+xtStrapOne = translate(
+  strapPart,
+  x = 116.5mm,
+  y = 46mm,
+  z = 157.5mm,
+  global = true,
+)
+xtStrapTwo = translate(
+  secondStrapBlank,
+  x = 116.5mm,
+  y = 74mm,
+  z = 157.5mm,
+  global = true,
+)
+lidSupport = translate(
+  columnPart,
+  x = 86mm,
+  z = 6mm,
+  global = true,
+)
+lidAxle = screw(shankDiameter = 6mm, length = 34mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 58mm, z = centerHeight, global = true)
+upperOutputPin = shoulderJoint(shoulderLength = 7.8mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 64mm,
+       y = upperOutputY,
+       z = centerHeight + upperOutputZ,
+       global = true,
+     )
+lowerOutputPin = shoulderJoint(shoulderLength = 7.8mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 76.5mm,
+       y = lowerOutputY,
+       z = centerHeight + lowerOutputZ,
+       global = true,
+     )
+upperInputPin = shoulderJoint(shoulderLength = 20.3mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 68.5mm,
+       y = upperInputY,
+       z = centerHeight + upperInputZ,
+       global = true,
+     )
+lowerInputPin = shoulderJoint(shoulderLength = 7.8mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 81mm,
+       y = lowerInputY,
+       z = centerHeight + lowerInputZ,
+       global = true,
+     )
+upperInputSpacer = sleeve(outerDiameter = 8mm, innerDiameter = 4.3mm, length = 13mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 71.5mm,
+       y = upperInputY,
+       z = centerHeight + upperInputZ,
+       global = true,
+     )
+  |> appearance(color = "#29292D")
+lowerInputSpacer = sleeve(outerDiameter = 8mm, innerDiameter = 4.3mm, length = 0.5mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 84mm,
+       y = lowerInputY,
+       z = centerHeight + lowerInputZ,
+       global = true,
+     )
+  |> appearance(color = "#969DA3")
+upperShellBoltA = boltedJoint(
+  diameter = 3mm,
+  grip = 8mm,
+  length = 14mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 60mm,
+       y = 15mm * cos(25deg),
+       z = 15mm * sin(25deg),
+       global = true,
+     )
+  |> rotate(axis = X, angle = upperShellAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+upperShellBoltB = boltedJoint(
+  diameter = 3mm,
+  grip = 8mm,
+  length = 14mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 60mm,
+       y = 15mm * cos(75deg),
+       z = 15mm * sin(75deg),
+       global = true,
+     )
+  |> rotate(axis = X, angle = upperShellAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+lowerShellBoltA = boltedJoint(
+  diameter = 3mm,
+  grip = 8mm,
+  length = 14mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 72.5mm,
+       y = 15mm * cos(25deg),
+       z = 15mm * sin(25deg),
+       global = true,
+     )
+  |> rotate(axis = X, angle = lowerShellAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+lowerShellBoltB = boltedJoint(
+  diameter = 3mm,
+  grip = 8mm,
+  length = 14mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 72.5mm,
+       y = 15mm * cos(75deg),
+       z = 15mm * sin(75deg),
+       global = true,
+     )
+  |> rotate(axis = X, angle = lowerShellAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+lidFrontSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 1.8mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 58mm, z = centerHeight, global = true)
+  |> appearance(color = "#29292D")
+lidMiddleSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 4.3mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 68mm, z = centerHeight, global = true)
+  |> appearance(color = "#29292D")
+lidRearSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 1.3mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 80.5mm, z = centerHeight, global = true)
+  |> appearance(color = "#29292D")
+lidAxleNut = hexNut(acrossFlats = 10mm, thickness = 5mm, boreDiameter = 6mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 90mm, z = centerHeight, global = true)
+columnBoltA = boltedJoint(
+  diameter = 4mm,
+  grip = 12mm,
+  length = 20mm,
+  acrossFlats = 7mm,
+  nutHeight = 3.2mm,
+)
+  |> translate(x = 86mm, y = 28mm, global = true)
+columnBoltB = clone(columnBoltA)
+  |> translate(y = 32mm, global = true)
+xtBaseBoltA = boltedJoint(
+  diameter = 4mm,
+  grip = 12mm,
+  length = 20mm,
+  acrossFlats = 7mm,
+  nutHeight = 3.2mm,
+)
+  |> translate(x = 106.5mm, y = 37mm, global = true)
+xtBaseBoltB = clone(xtBaseBoltA)
+  |> translate(y = 46mm, global = true)
+xtClampBoltA = boltedJoint(
+  diameter = 3mm,
+  grip = 35mm,
+  length = 42mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> translate(
+       x = 91.5mm,
+       y = 46mm,
+       z = 126.5mm,
+       global = true,
+     )
+xtClampBoltB = clone(xtClampBoltA)
+  |> translate(x = 50mm, global = true)
+xtClampBoltC = clone(xtClampBoltA)
+  |> translate(y = 28mm, global = true)
+xtClampBoltD = clone(xtClampBoltA)
+  |> translate(x = 50mm, y = 28mm, global = true)
+footOne = translate(
+  footPart,
+  x = -105mm,
+  y = -53mm,
+  z = -8mm,
+  global = true,
+)
+footTwo = clone(footOne)
+  |> translate(x = 210mm, global = true)
+footThree = clone(footOne)
+  |> translate(y = 147mm, global = true)
+footFour = clone(footOne)
+  |> translate(x = 210mm, y = 147mm, global = true)
+footBoltOne = boltedJoint(
+  diameter = 4mm,
+  grip = 9.2mm,
+  length = 18mm,
+  acrossFlats = 7mm,
+  nutHeight = 3.2mm,
+)
+  |> translate(
+       x = -105mm,
+       y = -53mm,
+       z = -3.2mm,
+       global = true,
+     )
+footBoltTwo = clone(footBoltOne)
+  |> translate(x = 210mm, global = true)
+footBoltThree = clone(footBoltOne)
+  |> translate(y = 147mm, global = true)
+footBoltFour = clone(footBoltOne)
+  |> translate(x = 210mm, y = 147mm, global = true)

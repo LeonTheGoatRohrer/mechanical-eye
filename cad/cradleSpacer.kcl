@@ -1,0 +1,10 @@
+// Cradle compression spacer
+// Printable replaceable spacer; M3 through bolt carries clamping tension.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+spacerBlank = cylinder(radiusValue = 4mm, height = 24mm)
+spacerBore = cylinder(radiusValue = 1.7mm, height = 26mm)
+  |> translate(z = -1mm, global = true)
+cradleSpacer = subtract([spacerBlank], tools = [spacerBore])
+  |> appearance(color = "#242424")

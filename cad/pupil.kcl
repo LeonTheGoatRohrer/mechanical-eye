@@ -1,0 +1,17 @@
+// Separately fastened black pupil
+// Curved cap with M2 screw pilot accessed inside the globe, no adhesive.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder, sphericalSector from "profiles.kcl"
+capBlank = sphericalSector(outerRadius = 40.6mm, wall = 1.2mm, sweepAngle = 180deg)
+crop = cylinder(radiusValue = 8mm, height = 15mm)
+  |> translate(z = 30mm, global = true)
+cap = intersect([capBlank, crop])
+stem = cylinder(radiusValue = 3mm, height = 7mm)
+  |> translate(z = 33mm, global = true)
+blank = union([cap, stem])
+pilot = cylinder(radiusValue = 0.9mm, height = 6mm)
+  |> translate(z = 32mm, global = true)
+pupil = subtract([blank], tools = [pilot])
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> appearance(color = "#141416")

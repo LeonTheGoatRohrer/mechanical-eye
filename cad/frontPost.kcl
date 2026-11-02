@@ -1,0 +1,19 @@
+// Front cover support post
+// Two accessible transverse M3 cover fasteners and two M4 base bolts.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+foot = plate(width = 24mm, depth = 34mm, height = 6mm)
+upright = plate(width = 12mm, depth = 12mm, height = 151mm)
+blank = union([foot, upright])
+baseA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(y = -10mm, z = -1mm, global = true)
+baseB = clone(baseA)
+  |> translate(y = 20mm, global = true)
+coverA = cylinder(radiusValue = 1.7mm, height = 16mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(y = 8mm, z = 34mm, global = true)
+coverB = clone(coverA)
+  |> translate(z = 105mm, global = true)
+frontPost = subtract([blank], tools = [baseA, baseB, coverA, coverB])
+  |> appearance(color = "#29292D")

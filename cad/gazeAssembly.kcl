@@ -1,0 +1,593 @@
+// Fixed-servo gaze subassembly
+// Internal two-axis fork and rigid spatial rods; all servo cases and support members remain stationary.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import * from "assemblyParameters.kcl"
+import gazeState from "gazeKinematics.kcl"
+import "eyeFront.kcl" as globePart
+import "pupil.kcl" as pupilPart
+import "eyeCarrier.kcl" as carrierPart
+import "innerYawFork.kcl" as forkPart
+import "fixedGazeSupport.kcl" as supportPart
+import "pitchServoStand.kcl" as pitchStandPart
+import "yawServoTower.kcl" as yawStandPart
+import "hitecReference.kcl" as servoPart
+import "hitecMount.kcl" as mountPart
+import "hitecHornReference.kcl" as hornPart
+import "yawDriveAdapter.kcl" as yawAdapterPart
+import "pitchDriveAdapter.kcl" as pitchAdapterPart
+import "yawSocketRod.kcl" as yawRodPart
+import "pitchSocketRod.kcl" as pitchRodPart
+import "gazeBallJoint.kcl" as jointPart
+import "yawPivotBolt.kcl" as yawAxlePart
+import "cableClip.kcl" as clipPart
+import sleeve, screw from "mechanismProfiles.kcl"
+import boltedJoint, shoulderJoint from "hardwareSets.kcl"
+import hexNut from "fastenerProfiles.kcl"
+pitchServoBlank = clone(servoPart)
+pitchMountBlank = clone(mountPart)
+pitchHornBlank = clone(hornPart)
+yawRodOther = clone(yawRodPart)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+pitchRodOther = clone(pitchRodPart)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+yawJointInputBlank = clone(jointPart)
+yawJointOutputBlank = clone(jointPart)
+pitchJointInputBlank = clone(jointPart)
+
+fixedSupport = translate(supportPart, z = 6mm, global = true)
+fixedPitchStand = translate(
+  pitchStandPart,
+  x = -48mm,
+  y = 65mm,
+  z = 6mm,
+  global = true,
+)
+fixedYawStand = translate(
+  yawStandPart,
+  x = -10mm,
+  y = 75mm,
+  z = 6mm,
+  global = true,
+)
+yawServo = translate(
+  servoPart,
+  x = -10mm,
+  y = 75mm,
+  z = centerHeight - 70.5mm,
+  global = true,
+)
+yawMount = translate(
+  mountPart,
+  x = -10mm,
+  y = 75mm,
+  z = centerHeight - 48mm,
+  global = true,
+)
+yawHorn = rotate(
+  hornPart,
+  axis = Z,
+  angle = gazeYaw,
+  global = true,
+)
+  |> translate(y = 75mm, z = centerHeight - 29.5mm, global = true)
+yawAdapter = rotate(
+  yawAdapterPart,
+  axis = Z,
+  angle = gazeYaw,
+  global = true,
+)
+  |> translate(y = 75mm, z = centerHeight - 27mm, global = true)
+pitchServo = rotate(
+  pitchServoBlank,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -77.5mm,
+       y = 65mm,
+       z = centerHeight,
+       global = true,
+     )
+pitchMount = rotate(
+  pitchMountBlank,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -55mm,
+       y = 65mm,
+       z = centerHeight,
+       global = true,
+     )
+pitchHorn = rotate(
+  pitchHornBlank,
+  axis = Z,
+  angle = 180deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> rotate(axis = X, angle = gazeState.theta, global = true)
+  |> translate(
+       x = -36.5mm,
+       y = 75mm,
+       z = centerHeight,
+       global = true,
+     )
+pitchAdapter = rotate(
+  pitchAdapterPart,
+  axis = Z,
+  angle = 180deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> rotate(axis = X, angle = gazeState.theta, global = true)
+  |> translate(
+       x = -34mm,
+       y = 75mm,
+       z = centerHeight,
+       global = true,
+     )
+pitchSpacerA = sleeve(outerDiameter = 8mm, innerDiameter = 3.4mm, length = 3mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -55mm,
+       y = 36mm,
+       z = centerHeight - 12mm,
+       global = true,
+     )
+  |> appearance(color = "#242428")
+pitchSpacerB = clone(pitchSpacerA)
+  |> translate(y = 58mm, global = true)
+pitchSpacerC = clone(pitchSpacerA)
+  |> translate(z = 24mm, global = true)
+pitchSpacerD = clone(pitchSpacerA)
+  |> translate(y = 58mm, z = 24mm, global = true)
+
+// Rear-installed 2 x 8 mm plastic screws; nominal unthreaded references.
+shellBoltA = screw(shankDiameter = 2mm, length = 8mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = -28mm,
+       y = -14mm,
+       z = -8mm,
+       global = true,
+     )
+shellBoltB = clone(shellBoltA)
+  |> translate(x = 56mm, global = true)
+shellBoltC = clone(shellBoltA)
+  |> translate(z = 16mm, global = true)
+shellBoltD = clone(shellBoltA)
+  |> translate(x = 56mm, z = 16mm, global = true)
+pupilScrew = screw(shankDiameter = 2mm, length = 5mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(y = -33mm, global = true)
+pitchOutputJoint = translate(
+  jointPart,
+  x = -12mm,
+  z = 26mm,
+  global = true,
+)
+reviewGlobe = appearance(
+  globePart,
+  color = "#F7F7F2",
+  opacity =   if sectionReview {
+    18_
+  } else {
+    100_
+  },
+)
+globeGroup = [
+  reviewGlobe,
+  pupilPart,
+  carrierPart,
+  shellBoltA,
+  shellBoltB,
+  shellBoltC,
+  shellBoltD,
+  pupilScrew,
+  pitchOutputJoint
+]
+globeAssembly = rotate(
+  globeGroup,
+  axis = X,
+  angle = gazePitch,
+  global = true,
+)
+  |> rotate(axis = Z, angle = gazeYaw, global = true)
+  |> translate(z = centerHeight, global = true)
+pitchPinA = shoulderJoint(shoulderLength = 10.3mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -26mm, global = true)
+pitchPinB = clone(pitchPinA)
+  |> rotate(axis = Z, angle = 180deg, global = true)
+pitchThrustA = sleeve(outerDiameter = 7mm, innerDiameter = 4.3mm, length = 2mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -22mm, global = true)
+  |> appearance(color = "#242428")
+pitchThrustB = clone(pitchThrustA)
+  |> rotate(axis = Z, angle = 180deg, global = true)
+yawOutputJoint = rotate(
+  yawJointOutputBlank,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 20mm,
+       y = 16mm,
+       z = -13mm,
+       global = true,
+     )
+armShimA = sleeve(outerDiameter = 6mm, innerDiameter = 3.2mm, length = 0.1mm)
+  |> translate(
+       x = 20mm,
+       y = 16mm,
+       z = -27mm,
+       global = true,
+     )
+  |> appearance(color = "#92989D")
+armShimB = clone(armShimA)
+  |> translate(z = 3.9mm, global = true)
+forkGroup = [
+  forkPart,
+  pitchPinA,
+  pitchPinB,
+  pitchThrustA,
+  pitchThrustB,
+  yawOutputJoint,
+  armShimA,
+  armShimB
+]
+yawForkAssembly = rotate(
+  forkGroup,
+  axis = Z,
+  angle = gazeYaw,
+  global = true,
+)
+  |> translate(z = centerHeight, global = true)
+yawAxle = translate(yawAxlePart, z = centerHeight - 35mm, global = true)
+yawThrustLower = sleeve(outerDiameter = 12mm, innerDiameter = 6.3mm, length = 1mm)
+  |> translate(z = centerHeight - 28mm, global = true)
+  |> appearance(color = "#242428")
+yawThrustUpper = clone(yawThrustLower)
+  |> translate(z = 5mm, global = true)
+yawRetainingWasher = sleeve(outerDiameter = 9mm, innerDiameter = 4.3mm, length = 0.5mm)
+  |> translate(z = centerHeight - 21.7mm, global = true)
+  |> appearance(color = "#92989D")
+yawAxleNut = hexNut(acrossFlats = 7mm, thickness = 3.2mm, boreDiameter = 4mm)
+  |> translate(z = centerHeight - 21.2mm, global = true)
+
+yawInputJoint = rotate(
+  yawJointInputBlank,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 20mm,
+       y = 16mm,
+       z = -13mm,
+       global = true,
+     )
+  |> rotate(axis = Z, angle = gazeYaw, global = true)
+  |> translate(y = 75mm, z = centerHeight, global = true)
+pitchInputJoint = rotate(
+  pitchJointInputBlank,
+  axis = Y,
+  angle = 180deg,
+  global = true,
+)
+  |> rotate(axis = X, angle = gazeState.theta, global = true)
+  |> translate(
+       x = -20mm,
+       y = gazeState.inputY,
+       z = centerHeight + gazeState.inputZ,
+       global = true,
+     )
+yawRodBoltA = boltedJoint(
+  diameter = 2mm,
+  grip = 8mm,
+  length = 12mm,
+  acrossFlats = 4mm,
+  nutHeight = 1.6mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -4mm, y = 12mm, global = true)
+yawRodBoltB = clone(yawRodBoltA)
+  |> translate(y = 51mm, global = true)
+pitchRodBoltA = boltedJoint(
+  diameter = 2mm,
+  grip = 8mm,
+  length = 12mm,
+  acrossFlats = 4mm,
+  nutHeight = 1.6mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -4mm, y = 12mm, global = true)
+pitchRodBoltB = clone(pitchRodBoltA)
+  |> translate(y = sqrt(5693_) * 1mm - 24mm, global = true)
+yawRodGroup = [
+  yawRodPart,
+  yawRodOther,
+  yawRodBoltA,
+  yawRodBoltB
+]
+yawRod = rotate(
+  yawRodGroup,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(
+       x = 20mm * cos(gazeYaw) - (16mm * sin(gazeYaw)),
+       y = 20mm * sin(gazeYaw) + 16mm * cos(gazeYaw),
+       z = centerHeight - 13mm,
+       global = true,
+     )
+pitchRodGroup = [
+  pitchRodPart,
+  pitchRodOther,
+  pitchRodBoltA,
+  pitchRodBoltB
+]
+pitchRod = rotate(
+  pitchRodGroup,
+  axis = X,
+  angle = gazeState.elevation,
+  global = true,
+)
+  |> rotate(axis = Z, angle = gazeState.heading, global = true)
+  |> translate(
+       x = gazeState.x,
+       y = gazeState.y,
+       z = centerHeight + gazeState.z,
+       global = true,
+     )
+
+pitchMountBoltA = boltedJoint(
+  diameter = 3mm,
+  grip = 11mm,
+  length = 18mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -55mm,
+       y = 36mm,
+       z = centerHeight - 12mm,
+       global = true,
+     )
+pitchMountBoltB = clone(pitchMountBoltA)
+  |> translate(y = 58mm, global = true)
+pitchMountBoltC = clone(pitchMountBoltA)
+  |> translate(z = 24mm, global = true)
+pitchMountBoltD = clone(pitchMountBoltA)
+  |> translate(y = 58mm, z = 24mm, global = true)
+yawMountBoltA = boltedJoint(
+  diameter = 3mm,
+  grip = 9mm,
+  length = 16mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> rotate(axis = X, angle = 180deg, global = true)
+  |> translate(
+       x = -39mm,
+       y = 63mm,
+       z = centerHeight - 44mm,
+       global = true,
+     )
+yawMountBoltB = clone(yawMountBoltA)
+  |> translate(x = 58mm, global = true)
+yawMountBoltC = clone(yawMountBoltA)
+  |> translate(y = 24mm, global = true)
+yawMountBoltD = clone(yawMountBoltA)
+  |> translate(x = 58mm, y = 24mm, global = true)
+yawEarA = boltedJoint(
+  diameter = 3mm,
+  grip = 6.5mm,
+  length = 12mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> translate(
+       x = -33.9mm,
+       y = 69.9mm,
+       z = centerHeight - 48mm,
+       global = true,
+     )
+yawEarB = clone(yawEarA)
+  |> translate(x = 47.8mm, global = true)
+yawEarC = clone(yawEarA)
+  |> translate(y = 10.2mm, global = true)
+yawEarD = clone(yawEarA)
+  |> translate(x = 47.8mm, y = 10.2mm, global = true)
+pitchEarA = boltedJoint(
+  diameter = 3mm,
+  grip = 6.5mm,
+  length = 12mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -55mm,
+       y = 41.1mm,
+       z = centerHeight - 5.1mm,
+       global = true,
+     )
+pitchEarB = clone(pitchEarA)
+  |> translate(y = 47.8mm, global = true)
+pitchEarC = clone(pitchEarA)
+  |> translate(z = 10.2mm, global = true)
+pitchEarD = clone(pitchEarA)
+  |> translate(y = 47.8mm, z = 10.2mm, global = true)
+yawHornBoltA = boltedJoint(
+  diameter = 2mm,
+  grip = 6.5mm,
+  length = 10mm,
+  acrossFlats = 4mm,
+  nutHeight = 1.6mm,
+)
+  |> translate(x = hornHoleRadiusUnverified, z = centerHeight - 29.5mm, global = true)
+  |> rotate(axis = Z, angle = gazeYaw, global = true)
+  |> translate(y = 75mm, global = true)
+yawHornBoltB = boltedJoint(
+  diameter = 2mm,
+  grip = 6.5mm,
+  length = 10mm,
+  acrossFlats = 4mm,
+  nutHeight = 1.6mm,
+)
+  |> translate(x = -hornHoleRadiusUnverified, z = centerHeight - 29.5mm, global = true)
+  |> rotate(axis = Z, angle = gazeYaw, global = true)
+  |> translate(y = 75mm, global = true)
+pitchHornBoltA = boltedJoint(
+  diameter = 2mm,
+  grip = 6.5mm,
+  length = 10mm,
+  acrossFlats = 4mm,
+  nutHeight = 1.6mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -36.5mm, z = hornHoleRadiusUnverified, global = true)
+  |> rotate(axis = X, angle = gazeState.theta, global = true)
+  |> translate(y = 75mm, z = centerHeight, global = true)
+pitchHornBoltB = boltedJoint(
+  diameter = 2mm,
+  grip = 6.5mm,
+  length = 10mm,
+  acrossFlats = 4mm,
+  nutHeight = 1.6mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -36.5mm, z = -hornHoleRadiusUnverified, global = true)
+  |> rotate(axis = X, angle = gazeState.theta, global = true)
+  |> translate(y = 75mm, z = centerHeight, global = true)
+yawHornCenter = screw(shankDiameter = 3mm, length = 10mm)
+  |> rotate(axis = X, angle = 180deg, global = true)
+  |> translate(y = 75mm, z = centerHeight - 23mm, global = true)
+pitchHornCenter = screw(shankDiameter = 3mm, length = 10mm)
+  |> rotate(axis = Y, angle = -90deg, global = true)
+  |> translate(
+       x = -30mm,
+       y = 75mm,
+       z = centerHeight,
+       global = true,
+     )
+baseBoltA = boltedJoint(
+  diameter = 4mm,
+  grip = 10mm,
+  length = 16mm,
+  acrossFlats = 7mm,
+  nutHeight = 3.2mm,
+)
+  |> translate(x = -13mm, y = 50mm, global = true)
+baseBoltB = clone(baseBoltA)
+  |> translate(x = 26mm, global = true)
+baseBoltC = boltedJoint(
+  diameter = 4mm,
+  grip = 10mm,
+  length = 16mm,
+  acrossFlats = 7mm,
+  nutHeight = 3.2mm,
+)
+  |> translate(x = -62mm, y = 36mm, global = true)
+baseBoltD = clone(baseBoltC)
+  |> translate(y = 58mm, global = true)
+baseBoltE = boltedJoint(
+  diameter = 4mm,
+  grip = 10mm,
+  length = 16mm,
+  acrossFlats = 7mm,
+  nutHeight = 3.2mm,
+)
+  |> translate(x = -48mm, y = 75mm, global = true)
+baseBoltF = clone(baseBoltE)
+  |> translate(x = 76mm, global = true)
+cameraCableClip = translate(
+  clipPart,
+  y = 50mm,
+  z = 181mm,
+  global = true,
+)
+clipBoltA = boltedJoint(
+  diameter = 3mm,
+  grip = 8mm,
+  length = 14mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> translate(
+       x = -11mm,
+       y = 50mm,
+       z = 177mm,
+       global = true,
+     )
+clipBoltB = clone(clipBoltA)
+  |> translate(x = 22mm, global = true)
+gazeAssembly = [
+  fixedSupport,
+  fixedPitchStand,
+  fixedYawStand,
+  yawServo,
+  yawMount,
+  yawHorn,
+  yawAdapter,
+  pitchServo,
+  pitchMount,
+  pitchHorn,
+  pitchAdapter,
+  pitchSpacerA,
+  pitchSpacerB,
+  pitchSpacerC,
+  pitchSpacerD,
+  globeAssembly,
+  yawForkAssembly,
+  yawAxle,
+  yawThrustLower,
+  yawThrustUpper,
+  yawRetainingWasher,
+  yawAxleNut,
+  yawInputJoint,
+  pitchInputJoint,
+  yawRod,
+  pitchRod,
+  pitchMountBoltA,
+  pitchMountBoltB,
+  pitchMountBoltC,
+  pitchMountBoltD,
+  yawMountBoltA,
+  yawMountBoltB,
+  yawMountBoltC,
+  yawMountBoltD,
+  yawEarA,
+  yawEarB,
+  yawEarC,
+  yawEarD,
+  pitchEarA,
+  pitchEarB,
+  pitchEarC,
+  pitchEarD,
+  yawHornBoltA,
+  yawHornBoltB,
+  pitchHornBoltA,
+  pitchHornBoltB,
+  yawHornCenter,
+  pitchHornCenter,
+  baseBoltA,
+  baseBoltB,
+  baseBoltC,
+  baseBoltD,
+  baseBoltE,
+  baseBoltF,
+  cameraCableClip,
+  clipBoltA,
+  clipBoltB
+]

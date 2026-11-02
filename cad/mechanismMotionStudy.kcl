@@ -1,0 +1,443 @@
+// Bewegungsstudie des animatronischen Auges
+// Manuell einstellbare Phase; Druckteile aus Platten 1 und 2, keine Filmdatei.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import centerHeight from "assemblyParameters.kcl"
+import gazeSolution from "gazeKinematics.kcl"
+import "tableBase.kcl" as basePart
+import "xtSaddle.kcl" as saddlePart
+import "pitchServoStand.kcl" as pitchStandPart
+import "fixedGazeSupport.kcl" as supportPart
+import "yawServoTower.kcl" as yawStandPart
+import "lidColumn.kcl" as columnPart
+import "upperLid.kcl" as upperLidPart
+import "lowerLid.kcl" as lowerLidPart
+import "yawSocketRod.kcl" as yawRodPart
+import "pitchSocketRod.kcl" as pitchRodPart
+import "eyeCarrier.kcl" as carrierPart
+import "innerYawFork.kcl" as forkPart
+import "upperLidHub.kcl" as upperHubPart
+import "lowerLidHub.kcl" as lowerHubPart
+import "hitecMount.kcl" as mountPart
+import "xtStrap.kcl" as strapPart
+import "upperBlinkRod.kcl" as upperRodPart
+import "lowerBlinkRod.kcl" as lowerRodPart
+import "blinkCrank.kcl" as crankPart
+import "tableFoot.kcl" as footPart
+import "yawDriveAdapter.kcl" as yawAdapterPart
+import "pitchDriveAdapter.kcl" as pitchAdapterPart
+import "cableClip.kcl" as clipPart
+import "pupil.kcl" as pupilPart
+import "printedGazeJoint.kcl" as jointPart
+import sleeve from "mechanismProfiles.kcl"
+
+// Phase 0 bis 1 manuell einstellen: Gieren, Nicken, Blinzeln, Kombination.
+motionPhase = 0.3125_
+yawAngle = if motionPhase < 0.25_ {
+  20deg * sin(motionPhase * 1440deg)
+} else if motionPhase >= 0.75_ {
+  15deg * sin((motionPhase - 0.75_) * 1440deg)
+} else {
+  0deg
+}
+pitchAngle = if motionPhase >= 0.25_ & motionPhase < 0.5_ {
+  12deg * sin((motionPhase - 0.25_) * 1440deg)
+} else if motionPhase >= 0.75_ {
+  8deg * sin((motionPhase - 0.75_) * 1440deg)
+} else {
+  0deg
+}
+blinkInput = if motionPhase >= 0.5_ & motionPhase < 0.75_ {
+  17deg * (1_ - cos((motionPhase - 0.5_) * 1440deg))
+} else if motionPhase >= 0.75_ {
+  17deg * (1_ - cos((motionPhase - 0.75_) * 1440deg))
+} else {
+  0deg
+}
+gazeState = gazeSolution(yaw = yawAngle, pitch = pitchAngle)
+
+// Gleiche geschlossene Lidkinematik wie blinkKinematics.kcl.
+inputAngle = 90deg + blinkInput
+upperY = 60_ + 16_ * cos(inputAngle)
+upperZ = 16_ * sin(inputAngle)
+lowerY = 60_ - (24_ * cos(inputAngle))
+lowerZ = -24_ * sin(inputAngle)
+upperDistance = sqrt(upperY * upperY + upperZ * upperZ)
+lowerDistance = sqrt(lowerY * lowerY + lowerZ * lowerZ)
+upperInputY = upperY * 1mm
+upperInputZ = upperZ * 1mm
+upperOutputAngle = atan2(y = upperInputZ, x = upperInputY) + acos((400_ + upperDistance * upperDistance - 3616_) / (40_ * upperDistance))
+lowerOutputAngle = atan2(y = lowerZ * 1mm, x = lowerY * 1mm) + acos((1296_ + lowerDistance * lowerDistance - 7200_) / (72_ * lowerDistance))
+upperOutputY = 20mm * cos(upperOutputAngle)
+upperOutputZ = 20mm * sin(upperOutputAngle)
+lowerOutputY = 36mm * cos(lowerOutputAngle)
+lowerOutputZ = 36mm * sin(lowerOutputAngle)
+upperRodAngle = atan2(y = upperInputZ - upperOutputZ, x = upperInputY - upperOutputY)
+lowerRodAngle = atan2(y = lowerZ * 1mm - lowerOutputZ, x = lowerY * 1mm - lowerOutputY)
+upperShellAngle = 55deg + upperOutputAngle - 90deg
+lowerShellAngle = 193deg + lowerOutputAngle - 90deg
+
+// Feste Druckteile.
+base = translate(basePart, y = 20mm, global = true)
+  |> appearance(color = "#687785")
+xtSupport = translate(
+  saddlePart,
+  x = 116.5mm,
+  y = 60mm,
+  z = 6mm,
+  global = true,
+)
+  |> appearance(color = "#789aab")
+pitchStand = translate(
+  pitchStandPart,
+  x = -48mm,
+  y = 65mm,
+  z = 6mm,
+  global = true,
+)
+  |> appearance(color = "#789aab")
+centralSupport = translate(supportPart, z = 6mm, global = true)
+  |> appearance(color = "#789aab")
+yawStand = translate(
+  yawStandPart,
+  x = -10mm,
+  y = 75mm,
+  z = 6mm,
+  global = true,
+)
+  |> appearance(color = "#789aab")
+lidStand = translate(
+  columnPart,
+  x = 86mm,
+  z = 6mm,
+  global = true,
+)
+  |> appearance(color = "#789aab")
+footBlankB = clone(footPart)
+footBlankC = clone(footPart)
+footBlankD = clone(footPart)
+footA = translate(
+  footPart,
+  x = -105mm,
+  y = -53mm,
+  z = -8mm,
+  global = true,
+)
+footB = translate(
+  footBlankB,
+  x = 105mm,
+  y = -53mm,
+  z = -8mm,
+  global = true,
+)
+footC = translate(
+  footBlankC,
+  x = -105mm,
+  y = 94mm,
+  z = -8mm,
+  global = true,
+)
+footD = translate(
+  footBlankD,
+  x = 105mm,
+  y = 94mm,
+  z = -8mm,
+  global = true,
+)
+secondStrapBlank = clone(strapPart)
+xtStrapA = translate(
+  strapPart,
+  x = 116.5mm,
+  y = 46mm,
+  z = 157.5mm,
+  global = true,
+)
+xtStrapB = translate(
+  secondStrapBlank,
+  x = 116.5mm,
+  y = 74mm,
+  z = 157.5mm,
+  global = true,
+)
+secondMountBlank = clone(mountPart)
+yawMount = translate(
+  mountPart,
+  x = -10mm,
+  y = 75mm,
+  z = centerHeight - 48mm,
+  global = true,
+)
+pitchMount = rotate(
+  secondMountBlank,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -55mm,
+       y = 65mm,
+       z = centerHeight,
+       global = true,
+     )
+pitchSpacerA = sleeve(outerDiameter = 8mm, innerDiameter = 3.4mm, length = 3mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -55mm,
+       y = 36mm,
+       z = centerHeight - 12mm,
+       global = true,
+     )
+pitchSpacerB = clone(pitchSpacerA)
+  |> translate(y = 58mm, global = true)
+pitchSpacerC = clone(pitchSpacerA)
+  |> translate(z = 24mm, global = true)
+pitchSpacerD = clone(pitchSpacerA)
+  |> translate(y = 58mm, z = 24mm, global = true)
+cameraCableClip = translate(
+  clipPart,
+  y = 50mm,
+  z = 181mm,
+  global = true,
+)
+
+// Blickgelenke und starre Pfannenstangen.
+yawRodOther = clone(yawRodPart)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+pitchRodOther = clone(pitchRodPart)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+yawJointInputBlank = clone(jointPart)
+yawJointOutputBlank = clone(jointPart)
+pitchJointInputBlank = clone(jointPart)
+pitchOutputJoint = translate(
+  jointPart,
+  x = -12mm,
+  z = 26mm,
+  global = true,
+)
+carrierDisplay = appearance(carrierPart, color = "#80bda6")
+pupilDisplay = appearance(pupilPart, color = "#e7be66")
+carrierGroup = [
+  carrierDisplay,
+  pupilDisplay,
+  pitchOutputJoint
+]
+carrierAssembly = rotate(
+  carrierGroup,
+  axis = X,
+  angle = pitchAngle,
+  global = true,
+)
+  |> rotate(axis = Z, angle = yawAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+pitchThrustA = sleeve(outerDiameter = 7mm, innerDiameter = 4.3mm, length = 2mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -22mm, global = true)
+pitchThrustB = clone(pitchThrustA)
+  |> rotate(axis = Z, angle = 180deg, global = true)
+yawOutputJoint = rotate(
+  yawJointOutputBlank,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 20mm,
+       y = 16mm,
+       z = -13mm,
+       global = true,
+     )
+forkDisplay = appearance(forkPart, color = "#a48fc0")
+forkGroup = [
+  forkDisplay,
+  pitchThrustA,
+  pitchThrustB,
+  yawOutputJoint
+]
+yawForkAssembly = rotate(
+  forkGroup,
+  axis = Z,
+  angle = yawAngle,
+  global = true,
+)
+  |> translate(z = centerHeight, global = true)
+yawThrustLower = sleeve(outerDiameter = 12mm, innerDiameter = 6.3mm, length = 1mm)
+  |> translate(z = centerHeight - 28mm, global = true)
+yawThrustUpper = clone(yawThrustLower)
+  |> translate(z = 5mm, global = true)
+yawAdapter = rotate(
+  yawAdapterPart,
+  axis = Z,
+  angle = yawAngle,
+  global = true,
+)
+  |> translate(y = 75mm, z = centerHeight - 27mm, global = true)
+  |> appearance(color = "#daa76f")
+pitchAdapter = rotate(
+  pitchAdapterPart,
+  axis = Z,
+  angle = 180deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> rotate(axis = X, angle = gazeState.theta, global = true)
+  |> translate(
+       x = -34mm,
+       y = 75mm,
+       z = centerHeight,
+       global = true,
+     )
+  |> appearance(color = "#91be7f")
+yawInputJoint = rotate(
+  yawJointInputBlank,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 20mm,
+       y = 16mm,
+       z = -13mm,
+       global = true,
+     )
+  |> rotate(axis = Z, angle = yawAngle, global = true)
+  |> translate(y = 75mm, z = centerHeight, global = true)
+pitchInputJoint = rotate(
+  pitchJointInputBlank,
+  axis = Y,
+  angle = 180deg,
+  global = true,
+)
+  |> rotate(axis = X, angle = gazeState.theta, global = true)
+  |> translate(
+       x = -20mm,
+       y = gazeState.inputY,
+       z = centerHeight + gazeState.inputZ,
+       global = true,
+     )
+yawRodGroup = [yawRodPart, yawRodOther]
+yawRod = rotate(
+  yawRodGroup,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(
+       x = 20mm * cos(yawAngle) - (16mm * sin(yawAngle)),
+       y = 20mm * sin(yawAngle) + 16mm * cos(yawAngle),
+       z = centerHeight - 13mm,
+       global = true,
+     )
+  |> appearance(color = "#daa76f")
+pitchRodGroup = [pitchRodPart, pitchRodOther]
+pitchRod = rotate(
+  pitchRodGroup,
+  axis = X,
+  angle = gazeState.elevation,
+  global = true,
+)
+  |> rotate(axis = Z, angle = gazeState.heading, global = true)
+  |> translate(
+       x = gazeState.x,
+       y = gazeState.y,
+       z = centerHeight + gazeState.z,
+       global = true,
+     )
+  |> appearance(color = "#91be7f")
+
+// Lidbewegung mit zugehoeriger Kurbel und beiden Gestaengen.
+upperShell = rotate(
+  upperLidPart,
+  axis = X,
+  angle = upperShellAngle,
+  global = true,
+)
+  |> translate(z = centerHeight, global = true)
+  |> appearance(color = "#d0a47c")
+lowerShell = rotate(
+  lowerLidPart,
+  axis = X,
+  angle = lowerShellAngle,
+  global = true,
+)
+  |> translate(z = centerHeight, global = true)
+  |> appearance(color = "#b78e6b")
+upperHub = rotate(
+  upperHubPart,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 64mm, global = true)
+  |> rotate(axis = X, angle = upperShellAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+lowerHub = rotate(
+  lowerHubPart,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 76.5mm, global = true)
+  |> rotate(axis = X, angle = lowerShellAngle, global = true)
+  |> translate(z = centerHeight, global = true)
+upperRod = rotate(
+  upperRodPart,
+  axis = Z,
+  angle = upperRodAngle + 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 68.5mm,
+       y = upperOutputY,
+       z = centerHeight + upperOutputZ,
+       global = true,
+     )
+  |> appearance(color = "#e17f77")
+lowerRod = rotate(
+  lowerRodPart,
+  axis = Z,
+  angle = lowerRodAngle + 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 81mm,
+       y = lowerOutputY,
+       z = centerHeight + lowerOutputZ,
+       global = true,
+     )
+  |> appearance(color = "#deae6b")
+blinkCrank = rotate(
+  crankPart,
+  axis = Z,
+  angle = inputAngle + 90deg,
+  global = true,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 84.5mm,
+       y = 60mm,
+       z = centerHeight,
+       global = true,
+     )
+  |> appearance(color = "#d07386")
+lidFrontSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 1.8mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 58mm, z = centerHeight, global = true)
+lidMiddleSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 4.3mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 68mm, z = centerHeight, global = true)
+lidRearSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 1.3mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = 80.5mm, z = centerHeight, global = true)
+upperInputSpacer = sleeve(outerDiameter = 8mm, innerDiameter = 4.3mm, length = 13mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = 71.5mm,
+       y = upperInputY,
+       z = centerHeight + upperInputZ,
+       global = true,
+     )

@@ -1,0 +1,11 @@
+// Bearing inner-diameter test pin
+// 8.8 mm shaft tests 0.2 mm diametral clearance against the reported 9 mm bore.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+import bearingInnerDiameter, bearingWidthProvisional from "parameters.kcl"
+pinFoot = cylinder(radiusValue = 7mm, height = 2mm)
+pinShaft = cylinder(radiusValue = (bearingInnerDiameter - 0.2mm) / 2, height = bearingWidthProvisional + 4mm)
+  |> translate(z = 1.5mm, global = true)
+fitPin = union([pinFoot, pinShaft])
+  |> appearance(color = "#242424")

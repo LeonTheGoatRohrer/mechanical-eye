@@ -1,0 +1,21 @@
+// Common blink crank
+// 16 and 24 mm opposed crank pins; bolted to a measured original horn, not a printed spline.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+import cylinder from "profiles.kcl"
+blank = link(
+  pitch = 40mm,
+  width = 12mm,
+  thickness = 4mm,
+  boreDiameter = 4.3mm,
+)
+  |> translate(x = -24mm, global = true)
+centerBore = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(z = -1mm, global = true)
+boltA = cylinder(radiusValue = 1.2mm, height = 6mm)
+  |> translate(x = -8mm, z = -1mm, global = true)
+boltB = clone(boltA)
+  |> translate(x = 16mm, global = true)
+blinkCrank = subtract([blank], tools = [centerBore, boltA, boltB])
+  |> appearance(color = "#29292D")

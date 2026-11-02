@@ -1,0 +1,11 @@
+// XT Standard reference envelope UNVERIFIED
+// Body only; dimensions, shaft datum and supplied double horn must be measured before release.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import xtBodyLengthUnverified, xtBodyWidthUnverified, xtBodyHeightUnverified from "assemblyParameters.kcl"
+caseEnvelope = plate(width = xtBodyLengthUnverified, depth = xtBodyWidthUnverified, height = xtBodyHeightUnverified)
+shaftEnvelope = cylinder(radiusValue = 3mm, height = 3.5mm)
+  |> translate(z = xtBodyHeightUnverified, global = true)
+xtReference = union([caseEnvelope, shaftEnvelope])
+  |> appearance(color = "#626973")

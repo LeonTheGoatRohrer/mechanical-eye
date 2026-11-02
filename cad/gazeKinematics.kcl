@@ -1,0 +1,33 @@
+// Two-axis inverse linkage geometry
+// Fixed servo bases; scalar rod closure couples pitch servo angle to both gaze coordinates.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import gazeYaw, gazePitch from "assemblyParameters.kcl"
+export fn gazeSolution(yaw, pitch) {
+  x = -12_ * cos(yaw) + 26_ * sin(pitch) * sin(yaw)
+  y = -12_ * sin(yaw) - (26_ * sin(pitch) * cos(yaw))
+  z = 26_ * cos(pitch)
+  dx = x + 20_
+  dy = y - 75_
+  k = (dx * dx + dy * dy + z * z + 576_ - 5693_) / 48_
+  amplitude = sqrt(dy * dy + z * z)
+  theta = asin(k / amplitude) - atan2(y = z * 1mm, x = -dy * 1mm)
+  inputY = 75_ - (24_ * sin(theta))
+  inputZ = 24_ * cos(theta)
+  rodX = -20_ - x
+  rodY = inputY - y
+  rodZ = inputZ - z
+  return {
+    x = x * 1mm,
+    y = y * 1mm,
+    z = z * 1mm,
+    theta = theta,
+    inputY = inputY * 1mm,
+    inputZ = inputZ * 1mm,
+    heading = atan2(y = -rodX * 1mm, x = rodY * 1mm),
+    elevation = atan2(y = rodZ * 1mm, x = sqrt(rodX * rodX + rodY * rodY) * 1mm),
+    closure = rodX * rodX + rodY * rodY + rodZ * rodZ,
+    transmission = k / amplitude
+  }
+}
+export gazeState = gazeSolution(yaw = gazeYaw, pitch = gazePitch)

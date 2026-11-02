@@ -1,0 +1,59 @@
+// Repeated eye mechanism features
+// Parametric sleeves and round-ended links; function sketches are not UI point-editable.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+export fn sleeve(outerDiameter, innerDiameter, length) {
+  blank = cylinder(radiusValue = outerDiameter / 2, height = length)
+  bore = cylinder(radiusValue = innerDiameter / 2, height = length + 2mm)
+    |> translate(z = -1mm, global = true)
+  return subtract([blank], tools = [bore])
+}
+export fn link(pitch, width, thickness, boreDiameter) {
+  linkProfile = sketch(on = XY) {
+    leftArc = arc(start = [var 0mm, var 5mm], end = [var 0mm, var -5mm], center = [var 0mm, var 0mm])
+    rightArc = arc(start = [var 20mm, var -5mm], end = [var 20mm, var 5mm], center = [var 20mm, var 0mm])
+    bottom = line(start = [var 0mm, var -5mm], end = [var 20mm, var -5mm])
+    top = line(start = [var 20mm, var 5mm], end = [var 0mm, var 5mm])
+    coincident([leftArc.center, ORIGIN])
+    radius(leftArc) == width / 2
+    vertical([leftArc.center, leftArc.start])
+    vertical([leftArc.center, leftArc.end])
+    horizontalDistance([ORIGIN, rightArc.center]) == pitch
+    verticalDistance([ORIGIN, rightArc.center]) == 0mm
+    radius(rightArc) == width / 2
+    vertical([rightArc.center, rightArc.start])
+    vertical([rightArc.center, rightArc.end])
+    coincident([leftArc.end, bottom.start])
+    coincident([bottom.end, rightArc.start])
+    coincident([rightArc.end, top.start])
+    coincident([top.end, leftArc.start])
+  }
+  blank = extrude(
+    region(
+      segments = [
+        linkProfile.bottom,
+        linkProfile.rightArc
+      ],
+      intersectionIndex = -1,
+      direction = CCW,
+    ),
+    length = thickness,
+  )
+  hide(linkProfile)
+  firstBore = cylinder(radiusValue = boreDiameter / 2, height = thickness + 2mm)
+    |> translate(z = -1mm, global = true)
+  secondBore = clone(firstBore)
+    |> translate(x = pitch, global = true)
+  return subtract([blank], tools = [firstBore, secondBore])
+}
+export fn screw(shankDiameter, length) {
+  shank = cylinder(radiusValue = shankDiameter / 2, height = length)
+  head = cylinder(radiusValue = shankDiameter, height = shankDiameter)
+    |> translate(z = -shankDiameter, global = true)
+  blank = union([shank, head])
+  socket = plate(width = shankDiameter, depth = 1mm, height = 1.5mm)
+    |> translate(z = -shankDiameter, global = true)
+  return subtract([blank], tools = [socket])
+    |> appearance(color = "#92989D")
+}

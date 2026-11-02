@@ -1,0 +1,26 @@
+// Fixed-servo horn adapter family
+// Bolts to original round horns; hole radius remains an unverified editable interface.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+import cylinder from "profiles.kcl"
+export fn hornAdapter(reach, phase, hornRadius) {
+  arm = link(
+    pitch = reach,
+    width = 10mm,
+    thickness = 4mm,
+    boreDiameter = 3.2mm,
+  )
+    |> rotate(axis = Z, angle = phase, global = true)
+  hub = cylinder(radiusValue = 11mm, height = 3.8mm)
+    |> translate(z = 0.1mm, global = true)
+  blank = union([arm, hub])
+  centerBore = cylinder(radiusValue = 1.7mm, height = 6mm)
+    |> translate(z = -1mm, global = true)
+  holeA = cylinder(radiusValue = 1.1mm, height = 6mm)
+    |> translate(x = hornRadius, z = -1mm, global = true)
+  holeB = clone(holeA)
+    |> translate(x = -2 * hornRadius, global = true)
+  return subtract([blank], tools = [centerBore, holeA, holeB])
+    |> appearance(color = "#242428")
+}

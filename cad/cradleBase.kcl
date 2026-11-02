@@ -1,0 +1,29 @@
+// HS-325HB cradle base
+// Flat printable base with four accessible through-fastener locations.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+baseBlank = plate(width = 68mm, depth = 34mm, height = 4mm)
+baseHole = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(
+       x = -29mm,
+       y = -12mm,
+       z = -1mm,
+       global = true,
+     )
+baseHoleTwo = clone(baseHole)
+  |> translate(x = 58mm, global = true)
+baseHoleThree = clone(baseHole)
+  |> translate(y = 24mm, global = true)
+baseHoleFour = clone(baseHole)
+  |> translate(x = 58mm, y = 24mm, global = true)
+cradleBase = subtract(
+  [baseBlank],
+  tools = [
+    baseHole,
+    baseHoleTwo,
+    baseHoleThree,
+    baseHoleFour
+  ],
+)
+  |> appearance(color = "#242424")

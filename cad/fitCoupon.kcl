@@ -1,0 +1,51 @@
+// Hardware fit coupon
+// Three bearing OD fits and three proposed 4 mm pivot fits; read NOTES before printing.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import bearingOuterDiameter from "parameters.kcl"
+couponBlank = plate(width = 100mm, depth = 48mm, height = 4mm)
+bearingTight = cylinder(radiusValue = (bearingOuterDiameter + 0.1mm) / 2, height = 6mm)
+  |> translate(
+       x = -32mm,
+       y = 4mm,
+       z = -1mm,
+       global = true,
+     )
+bearingMedium = cylinder(radiusValue = (bearingOuterDiameter + 0.2mm) / 2, height = 6mm)
+  |> translate(y = 4mm, z = -1mm, global = true)
+bearingLoose = cylinder(radiusValue = (bearingOuterDiameter + 0.3mm) / 2, height = 6mm)
+  |> translate(
+       x = 32mm,
+       y = 4mm,
+       z = -1mm,
+       global = true,
+     )
+pivotTight = cylinder(radiusValue = 2.05mm, height = 6mm)
+  |> translate(
+       x = -32mm,
+       y = -17mm,
+       z = -1mm,
+       global = true,
+     )
+pivotMedium = cylinder(radiusValue = 2.1mm, height = 6mm)
+  |> translate(y = -17mm, z = -1mm, global = true)
+pivotLoose = cylinder(radiusValue = 2.15mm, height = 6mm)
+  |> translate(
+       x = 32mm,
+       y = -17mm,
+       z = -1mm,
+       global = true,
+     )
+fitCoupon = subtract(
+  [couponBlank],
+  tools = [
+    bearingTight,
+    bearingMedium,
+    bearingLoose,
+    pivotTight,
+    pivotMedium,
+    pivotLoose
+  ],
+)
+  |> appearance(color = "#242424")

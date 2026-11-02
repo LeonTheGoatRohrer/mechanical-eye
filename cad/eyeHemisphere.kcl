@@ -1,0 +1,8 @@
+// White eye envelope hemisphere
+// Hollow spherical study body; joining features remain to be designed.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import sphericalSector from "profiles.kcl"
+import eyeRadius, eyeWall from "parameters.kcl"
+eyeHemisphere = sphericalSector(outerRadius = eyeRadius, wall = eyeWall, sweepAngle = 180deg)
+  |> appearance(color = "#F5F5F2")

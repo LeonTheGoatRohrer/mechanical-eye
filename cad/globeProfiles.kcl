@@ -1,0 +1,111 @@
+// Integral white hemisphere with bearing trunnions
+// One continuous meridian profile; two bolted halves form the globe without shell unions.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+export fn globeHalf(pupilOpening) {
+  globeProfile = sketch(on = XY) {
+    outerArc = arc(start = [var 36mm, var 17.44mm], end = [var -36mm, var 17.44mm], center = [var 0mm, var 0mm])
+    innerArc = arc(
+      start = [var -34mm, var 17.41mm],
+      end = [var 34mm, var 17.41mm],
+      center = [var 0mm, var 0mm],
+      direction = CW,
+    )
+    leftSlope = line(start = [var -36mm, var 17.44mm], end = [var -37mm, var 14mm])
+    leftFace = line(start = [var -37mm, var 14mm], end = [var -37mm, var 4mm])
+    leftShaft = line(start = [var -37mm, var 4mm], end = [var -58mm, var 4mm])
+    leftTip = line(start = [var -58mm, var 4mm], end = [var -58mm, var 0mm])
+    leftFloor = line(start = [var -58mm, var 0mm], end = [var -34mm, var 0mm])
+    leftInner = line(start = [var -34mm, var 0mm], end = [var -34mm, var 17.41mm])
+    rightInner = line(start = [var 34mm, var 17.41mm], end = [var 34mm, var 0mm])
+    rightFloor = line(start = [var 34mm, var 0mm], end = [var 58mm, var 0mm])
+    rightTip = line(start = [var 58mm, var 0mm], end = [var 58mm, var 4mm])
+    rightShaft = line(start = [var 58mm, var 4mm], end = [var 37mm, var 4mm])
+    rightFace = line(start = [var 37mm, var 4mm], end = [var 37mm, var 14mm])
+    rightSlope = line(start = [var 37mm, var 14mm], end = [var 36mm, var 17.44mm])
+    coincident([outerArc.center, ORIGIN])
+    coincident([innerArc.center, outerArc.center])
+    radius(outerArc) == 40mm
+    radius(innerArc) == 38.2mm
+    horizontalDistance([ORIGIN, outerArc.start]) == 36mm
+    horizontalDistance([ORIGIN, outerArc.end]) == -36mm
+    horizontalDistance([ORIGIN, innerArc.start]) == -34mm
+    horizontalDistance([ORIGIN, innerArc.end]) == 34mm
+    coincident([outerArc.end, leftSlope.start])
+    horizontalDistance([leftSlope.start, leftSlope.end]) == -1mm
+    verticalDistance([ORIGIN, leftSlope.end]) == 14mm
+    coincident([leftSlope.end, leftFace.start])
+    vertical(leftFace)
+    distance([leftFace.start, leftFace.end]) == 10mm
+    coincident([leftFace.end, leftShaft.start])
+    horizontal(leftShaft)
+    distance([leftShaft.start, leftShaft.end]) == 21mm
+    coincident([leftShaft.end, leftTip.start])
+    vertical(leftTip)
+    distance([leftTip.start, leftTip.end]) == 4mm
+    coincident([leftTip.end, leftFloor.start])
+    horizontal(leftFloor)
+    coincident([leftFloor.end, leftInner.start])
+    vertical(leftInner)
+    coincident([leftInner.end, innerArc.start])
+    coincident([innerArc.end, rightInner.start])
+    vertical(rightInner)
+    verticalDistance([ORIGIN, rightInner.end]) == 0mm
+    coincident([rightInner.end, rightFloor.start])
+    horizontal(rightFloor)
+    equalLength([rightFloor, leftFloor])
+    coincident([rightFloor.end, rightTip.start])
+    vertical(rightTip)
+    equalLength([rightTip, leftTip])
+    coincident([rightTip.end, rightShaft.start])
+    horizontal(rightShaft)
+    equalLength([rightShaft, leftShaft])
+    coincident([rightShaft.end, rightFace.start])
+    vertical(rightFace)
+    equalLength([rightFace, leftFace])
+    coincident([rightFace.end, rightSlope.start])
+    coincident([rightSlope.end, outerArc.start])
+  }
+  blank = revolve(
+    region(
+      segments = [
+        globeProfile.outerArc,
+        globeProfile.leftSlope
+      ],
+      intersectionIndex = -1,
+      direction = CCW,
+    ),
+    axis = X,
+    angle = 180deg,
+  )
+    |> rotate(axis = X, angle = 90deg, global = true)
+  hide(globeProfile)
+  boltA = cylinder(radiusValue = 1.1mm, height = 50mm)
+    |> rotate(axis = X, angle = 90deg, global = true)
+    |> translate(x = -43.5mm, y = 25mm, global = true)
+  boltB = clone(boltA)
+    |> translate(x = 87mm, global = true)
+  leverBoltA = cylinder(radiusValue = 1.7mm, height = 10mm)
+    |> rotate(axis = Y, angle = 90deg, global = true)
+    |> translate(
+         x = -39mm,
+         y = -2.5mm,
+         z = 8mm,
+         global = true,
+       )
+  leverBoltB = clone(leverBoltA)
+    |> translate(z = -16mm, global = true)
+  joinedHoles = subtract([blank], tools = [boltA, boltB])
+  drilled = subtract([joinedHoles], tools = [leverBoltA, leverBoltB])
+  result = if pupilOpening {
+    pupilBore = cylinder(radiusValue = 3.2mm, height = 15mm)
+      |> rotate(axis = X, angle = 90deg, global = true)
+      |> translate(y = -30mm, global = true)
+    subtract([drilled], tools = [pupilBore])
+  } else {
+    drilled
+  }
+  return result
+    |> appearance(color = "#F7F7F2")
+}

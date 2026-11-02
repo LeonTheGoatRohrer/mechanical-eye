@@ -1,0 +1,26 @@
+// Exact planar blink loop closure
+// Analytic positions, not a dynamics/contact simulation; input zero is the open vertical-arm branch.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import blinkInput from "assemblyParameters.kcl"
+export inputAngle = 90deg + blinkInput
+upperY = 60_ + 16_ * cos(inputAngle)
+upperZ = 16_ * sin(inputAngle)
+lowerY = 60_ - (24_ * cos(inputAngle))
+lowerZ = -24_ * sin(inputAngle)
+upperDistance = sqrt(upperY * upperY + upperZ * upperZ)
+lowerDistance = sqrt(lowerY * lowerY + lowerZ * lowerZ)
+export upperInputY = upperY * 1mm
+export upperInputZ = upperZ * 1mm
+export lowerInputY = lowerY * 1mm
+export lowerInputZ = lowerZ * 1mm
+export upperOutputAngle = atan2(y = upperInputZ, x = upperInputY) + acos((400_ + upperDistance * upperDistance - 3616_) / (40_ * upperDistance))
+export lowerOutputAngle = atan2(y = lowerInputZ, x = lowerInputY) + acos((1296_ + lowerDistance * lowerDistance - 7200_) / (72_ * lowerDistance))
+export upperOutputY = 20mm * cos(upperOutputAngle)
+export upperOutputZ = 20mm * sin(upperOutputAngle)
+export lowerOutputY = 36mm * cos(lowerOutputAngle)
+export lowerOutputZ = 36mm * sin(lowerOutputAngle)
+export upperRodAngle = atan2(y = upperInputZ - upperOutputZ, x = upperInputY - upperOutputY)
+export lowerRodAngle = atan2(y = lowerInputZ - lowerOutputZ, x = lowerInputY - lowerOutputY)
+export upperShellAngle = 55deg + upperOutputAngle - 90deg
+export lowerShellAngle = 193deg + lowerOutputAngle - 90deg

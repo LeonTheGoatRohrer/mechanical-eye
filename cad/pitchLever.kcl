@@ -1,0 +1,27 @@
+// Globe pitch drive lever
+// Two-bolt interface to globe boss; 20 mm crank forms a planar parallelogram.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+import cylinder from "profiles.kcl"
+arm = link(
+  pitch = 26mm,
+  width = 10mm,
+  thickness = 3mm,
+  boreDiameter = 4.3mm,
+)
+hub = cylinder(radiusValue = 12mm, height = 3mm)
+blank = union([arm, hub])
+centerBore = cylinder(radiusValue = 4.2mm, height = 5mm)
+  |> translate(z = -1mm, global = true)
+boltA = cylinder(radiusValue = 1.7mm, height = 5mm)
+  |> translate(
+       x = 8mm,
+       y = -2.5mm,
+       z = -1mm,
+       global = true,
+     )
+boltB = clone(boltA)
+  |> translate(x = -16mm, global = true)
+pitchLever = subtract([blank], tools = [centerBore, boltA, boltB])
+  |> appearance(color = "#242428")

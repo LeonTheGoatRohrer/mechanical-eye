@@ -1,0 +1,50 @@
+// HS-325HB replaceable mounting plate
+// Manufacturer hole grid; chassis interface is a separate outer four-hole pattern.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import * from "parameters.kcl"
+mountBlank = plate(width = 68mm, depth = 34mm, height = 4mm)
+bodyOpening = plate(width = hitecBodyLength + 0.8mm, depth = hitecBodyWidth + 0.8mm, height = 6mm)
+  |> translate(z = -1mm, global = true)
+servoHole = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(
+       x = -hitecMountPitchLong / 2,
+       y = -hitecMountPitchWide / 2,
+       z = -1mm,
+       global = true,
+     )
+servoHoleTwo = clone(servoHole)
+  |> translate(y = hitecMountPitchWide, global = true)
+servoHoleThree = clone(servoHole)
+  |> translate(x = hitecMountPitchLong, global = true)
+servoHoleFour = clone(servoHole)
+  |> translate(x = hitecMountPitchLong, y = hitecMountPitchWide, global = true)
+chassisHole = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(
+       x = -29mm,
+       y = -12mm,
+       z = -1mm,
+       global = true,
+     )
+chassisHoleTwo = clone(chassisHole)
+  |> translate(x = 58mm, global = true)
+chassisHoleThree = clone(chassisHole)
+  |> translate(y = 24mm, global = true)
+chassisHoleFour = clone(chassisHole)
+  |> translate(x = 58mm, y = 24mm, global = true)
+hitecMount = subtract(
+  [mountBlank],
+  tools = [
+    bodyOpening,
+    servoHole,
+    servoHoleTwo,
+    servoHoleThree,
+    servoHoleFour,
+    chassisHole,
+    chassisHoleTwo,
+    chassisHoleThree,
+    chassisHoleFour
+  ],
+)
+  |> appearance(color = "#242424")

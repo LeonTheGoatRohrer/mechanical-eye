@@ -1,0 +1,28 @@
+// Small printed spacers for the current eye assembly
+// Complete twelve-piece set; separated for export, not a slicer project.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import sleeve from "mechanismProfiles.kcl"
+pitchMountSpacerA = sleeve(outerDiameter = 8mm, innerDiameter = 3.4mm, length = 3mm)
+pitchMountSpacerB = clone(pitchMountSpacerA)
+  |> translate(x = 16mm, global = true)
+pitchMountSpacerC = clone(pitchMountSpacerA)
+  |> translate(x = 32mm, global = true)
+pitchMountSpacerD = clone(pitchMountSpacerA)
+  |> translate(x = 48mm, global = true)
+pitchThrustA = sleeve(outerDiameter = 7mm, innerDiameter = 4.3mm, length = 2mm)
+  |> translate(y = 20mm, global = true)
+pitchThrustB = clone(pitchThrustA)
+  |> translate(x = 16mm, global = true)
+yawThrustA = sleeve(outerDiameter = 12mm, innerDiameter = 6.3mm, length = 1mm)
+  |> translate(x = 32mm, y = 20mm, global = true)
+yawThrustB = clone(yawThrustA)
+  |> translate(x = 20mm, global = true)
+upperInputSpacer = sleeve(outerDiameter = 8mm, innerDiameter = 4.3mm, length = 13mm)
+  |> translate(y = 40mm, global = true)
+lidFrontSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 1.8mm)
+  |> translate(x = 16mm, y = 40mm, global = true)
+lidMiddleSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 4.3mm)
+  |> translate(x = 32mm, y = 40mm, global = true)
+lidRearSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 1.3mm)
+  |> translate(x = 48mm, y = 40mm, global = true)

@@ -1,0 +1,57 @@
+// Phase A black print plate
+// ONLY mounting modules and coupons; not the complete eye print set.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import "hitecMount.kcl" as mountPart
+import "cradleBase.kcl" as basePart
+import "cradleSpacer.kcl" as spacerPart
+import "fitCoupon.kcl" as couponPart
+import "fitPin.kcl" as pinPart
+mountLeft = translate(
+  mountPart,
+  x = 48mm,
+  y = 55mm,
+  global = true,
+)
+mountRight = clone(mountLeft)
+  |> translate(x = 76mm, global = true)
+baseLeft = translate(
+  basePart,
+  x = 48mm,
+  y = 99mm,
+  global = true,
+)
+baseRight = clone(baseLeft)
+  |> translate(x = 76mm, global = true)
+spacerFirst = translate(
+  spacerPart,
+  x = 170mm,
+  y = 52mm,
+  global = true,
+)
+spacerSecond = clone(spacerFirst)
+  |> translate(x = 20mm, global = true)
+spacerThird = clone(spacerFirst)
+  |> translate(x = 40mm, global = true)
+spacerFourth = clone(spacerFirst)
+  |> translate(x = 60mm, global = true)
+spacerFifth = clone(spacerFirst)
+  |> translate(y = 22mm, global = true)
+spacerSixth = clone(spacerFirst)
+  |> translate(x = 20mm, y = 22mm, global = true)
+spacerSeventh = clone(spacerFirst)
+  |> translate(x = 40mm, y = 22mm, global = true)
+spacerEighth = clone(spacerFirst)
+  |> translate(x = 60mm, y = 22mm, global = true)
+couponPlacement = translate(
+  couponPart,
+  x = 68mm,
+  y = 158mm,
+  global = true,
+)
+pinPlacement = translate(
+  pinPart,
+  x = 142mm,
+  y = 147mm,
+  global = true,
+)

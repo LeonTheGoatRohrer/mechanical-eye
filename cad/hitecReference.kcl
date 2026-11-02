@@ -1,0 +1,42 @@
+// HS-325HB nominal reference envelope
+// Reference only, not a printable part or an exact external servo model.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import * from "parameters.kcl"
+caseEnvelope = plate(width = hitecBodyLength, depth = hitecBodyWidth, height = hitecBodyHeight)
+flangeEnvelope = plate(width = hitecFlangeLength, depth = hitecBodyWidth, height = 2.5mm)
+  |> translate(z = hitecFlangeUnderside, global = true)
+bossEnvelope = cylinder(radiusValue = 5mm, height = 1.8mm)
+  |> translate(x = 10mm, z = 36.5mm, global = true)
+shaftEnvelope = cylinder(radiusValue = 2.88mm, height = 3.2mm)
+  |> translate(x = 10mm, z = 38.3mm, global = true)
+servoBlank = union([
+  caseEnvelope,
+  flangeEnvelope,
+  bossEnvelope,
+  shaftEnvelope
+])
+flangeHole = cylinder(radiusValue = 2.25mm, height = 5mm)
+  |> translate(
+       x = -hitecMountPitchLong / 2,
+       y = -hitecMountPitchWide / 2,
+       z = hitecFlangeUnderside - 1mm,
+       global = true,
+     )
+flangeHoleTwo = clone(flangeHole)
+  |> translate(y = hitecMountPitchWide, global = true)
+flangeHoleThree = clone(flangeHole)
+  |> translate(x = hitecMountPitchLong, global = true)
+flangeHoleFour = clone(flangeHole)
+  |> translate(x = hitecMountPitchLong, y = hitecMountPitchWide, global = true)
+hitecReference = subtract(
+  [servoBlank],
+  tools = [
+    flangeHole,
+    flangeHoleTwo,
+    flangeHoleThree,
+    flangeHoleFour
+  ],
+)
+  |> appearance(color = "#5B6470")

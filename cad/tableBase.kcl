@@ -1,0 +1,140 @@
+// Table base
+// Through-bolted platform; split print strategy remains a separate review task.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+blank = plate(width = 244mm, depth = 164mm, height = 6mm)
+rightHole = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = 86mm,
+       y = 8mm,
+       z = -1mm,
+       global = true,
+     )
+rearRight = clone(rightHole)
+  |> translate(y = 32mm, global = true)
+yawHoleA = cylinder(radiusValue = 1.7mm, height = 8mm)
+  |> translate(
+       x = -39mm,
+       y = -32mm,
+       z = -1mm,
+       global = true,
+     )
+yawHoleB = clone(yawHoleA)
+  |> translate(x = 58mm, global = true)
+yawHoleC = clone(yawHoleA)
+  |> translate(y = 24mm, global = true)
+yawHoleD = clone(yawHoleB)
+  |> translate(y = 24mm, global = true)
+journalA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = -10mm,
+       y = 16mm,
+       z = -1mm,
+       global = true,
+     )
+journalB = clone(journalA)
+  |> translate(x = 20mm, global = true)
+frontA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = -54mm,
+       y = -73mm,
+       z = -1mm,
+       global = true,
+     )
+frontB = clone(frontA)
+  |> translate(x = 108mm, global = true)
+frontC = clone(frontA)
+  |> translate(y = 20mm, global = true)
+frontD = clone(frontB)
+  |> translate(y = 20mm, global = true)
+xtA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = 106.5mm,
+       y = 17mm,
+       z = -1mm,
+       global = true,
+     )
+xtB = clone(xtA)
+  |> translate(y = 46mm, global = true)
+footA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = -105mm,
+       y = -73mm,
+       z = -1mm,
+       global = true,
+     )
+footB = clone(footA)
+  |> translate(x = 210mm, global = true)
+footC = clone(footA)
+  |> translate(y = 147mm, global = true)
+footD = clone(footA)
+  |> translate(x = 210mm, y = 147mm, global = true)
+clipA = cylinder(radiusValue = 1.7mm, height = 8mm)
+  |> translate(
+       x = -11mm,
+       y = 70mm,
+       z = -1mm,
+       global = true,
+     )
+clipB = clone(clipA)
+  |> translate(x = 22mm, global = true)
+gazeSupportA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = -13mm,
+       y = 30mm,
+       z = -1mm,
+       global = true,
+     )
+gazeSupportB = clone(gazeSupportA)
+  |> translate(x = 26mm, global = true)
+fixedPitchA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = -62mm,
+       y = 16mm,
+       z = -1mm,
+       global = true,
+     )
+fixedPitchB = clone(fixedPitchA)
+  |> translate(y = 58mm, global = true)
+fixedYawA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = -48mm,
+       y = 55mm,
+       z = -1mm,
+       global = true,
+     )
+fixedYawB = clone(fixedYawA)
+  |> translate(x = 76mm, global = true)
+tableBase = subtract(
+  [blank],
+  tools = [
+    rightHole,
+    rearRight,
+    yawHoleA,
+    yawHoleB,
+    yawHoleC,
+    yawHoleD,
+    journalA,
+    journalB,
+    frontA,
+    frontB,
+    frontC,
+    frontD,
+    xtA,
+    xtB,
+    footA,
+    footB,
+    footC,
+    footD,
+    clipA,
+    clipB,
+    gazeSupportA,
+    gazeSupportB,
+    fixedPitchA,
+    fixedPitchB,
+    fixedYawA,
+    fixedYawB
+  ],
+)
+  |> appearance(color = "#202024")

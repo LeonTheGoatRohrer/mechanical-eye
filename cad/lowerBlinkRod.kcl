@@ -1,0 +1,12 @@
+// Lower blink connecting rod
+// Crossed planar linkage in a separate axial plane; 24 mm input and 36 mm output arms.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+lowerBlinkRod = link(
+  pitch = sqrt(60mm * 60mm + 60mm * 60mm),
+  width = 8mm,
+  thickness = 3mm,
+  boreDiameter = 4.3mm,
+)
+  |> appearance(color = "#29292D")

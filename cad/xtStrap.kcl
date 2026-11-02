@@ -1,0 +1,13 @@
+// XT body retaining strap, PROVISIONAL
+// M3 clamp bolts bypass the case; tighten only after checking the actual case and pads.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+xtStrap = link(
+  pitch = 50mm,
+  width = 10mm,
+  thickness = 4mm,
+  boreDiameter = 3.4mm,
+)
+  |> translate(x = -25mm, global = true)
+  |> appearance(color = "#29292D")

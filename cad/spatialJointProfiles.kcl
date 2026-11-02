@@ -1,0 +1,75 @@
+// Spherical bearing and split rod families
+// Repeated radii and lengths; socket clearance is radial and requires a print test.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+export fn ball(radiusValue) {
+  ballProfile = sketch(on = XY) {
+    rim = arc(start = [var 6mm, var 0mm], end = [var -6mm, var 0mm], center = [var 0mm, var 0mm])
+    axisEdge = line(start = [var -6mm, var 0mm], end = [var 6mm, var 0mm])
+    coincident([rim.center, ORIGIN])
+    radius(rim) == radiusValue
+    horizontal([rim.center, rim.start])
+    horizontal([rim.center, rim.end])
+    coincident([rim.end, axisEdge.start])
+    coincident([axisEdge.end, rim.start])
+  }
+  result = revolve(region(segments = [ballProfile.rim, ballProfile.axisEdge], intersectionIndex = -1, direction = CCW), axis = X, angle = 360deg)
+  hide(ballProfile)
+  return result
+}
+export fn socketHalf(length, radialGap) {
+  seatRadius = 6mm + radialGap
+  socketProfile = sketch(on = XY) {
+    seat = arc(start = [var 2.75mm, var 5.5mm], end = [var 0mm, var 6.15mm], center = [var 0mm, var 0mm])
+    splitFace = line(start = [var 0mm, var 6.15mm], end = [var 0mm, var 9mm])
+    outside = line(start = [var 0mm, var 9mm], end = [var 4mm, var 9mm])
+    endFace = line(start = [var 4mm, var 9mm], end = [var 4mm, var 5.5mm])
+    throat = line(start = [var 4mm, var 5.5mm], end = [var 2.75mm, var 5.5mm])
+    coincident([seat.center, ORIGIN])
+    radius(seat) == seatRadius
+    verticalDistance([ORIGIN, seat.start]) == 5.5mm
+    horizontalDistance([ORIGIN, seat.end]) == 0mm
+    coincident([seat.end, splitFace.start])
+    coincident([splitFace.end, outside.start])
+    coincident([outside.end, endFace.start])
+    coincident([endFace.end, throat.start])
+    coincident([throat.end, seat.start])
+    vertical(splitFace)
+    horizontal(outside)
+    vertical(endFace)
+    horizontal(throat)
+    verticalDistance([ORIGIN, outside.start]) == 9mm
+    horizontalDistance([ORIGIN, endFace.start]) == 4mm
+  }
+  endA = revolve(
+    region(
+      segments = [
+        socketProfile.seat,
+        socketProfile.splitFace
+      ],
+      intersectionIndex = -1,
+      direction = CW,
+    ),
+    axis = X,
+    angle = 360deg,
+  )
+  hide(socketProfile)
+  endB = clone(endA)
+    |> translate(y = length, global = true)
+  web = plate(width = 4mm, depth = length - 15mm, height = 8mm)
+    |> translate(
+         x = 2mm,
+         y = length / 2,
+         z = -4mm,
+         global = true,
+       )
+  blank = union([endA, endB, web])
+  boltA = cylinder(radiusValue = 1.1mm, height = 8mm)
+    |> rotate(axis = Y, angle = 90deg, global = true)
+    |> translate(x = -2mm, y = 12mm, global = true)
+  boltB = clone(boltA)
+    |> translate(y = length - 24mm, global = true)
+  return subtract([blank], tools = [boltA, boltB])
+    |> appearance(color = "#242428")
+}

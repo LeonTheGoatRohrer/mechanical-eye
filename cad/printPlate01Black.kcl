@@ -1,0 +1,64 @@
+// Black print plate 1
+// Current base and five stationary supports; 256 mm bed, unchanged part geometry.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import "tableBase.kcl" as basePart
+import "xtSaddle.kcl" as saddlePart
+import "pitchServoStand.kcl" as pitchPart
+import "fixedGazeSupport.kcl" as supportPart
+import "yawServoTower.kcl" as yawPart
+import "lidColumn.kcl" as columnPart
+
+base = translate(
+  basePart,
+  x = 128mm,
+  y = 88mm,
+  global = true,
+)
+xtSupport = translate(
+  saddlePart,
+  x = 36mm,
+  y = 211mm,
+  global = true,
+)
+pitchStand = translate(
+  pitchPart,
+  x = 92mm,
+  y = 213mm,
+  global = true,
+)
+centralSupport = translate(
+  supportPart,
+  x = 133mm,
+  y = 190mm,
+  global = true,
+)
+yawTower = translate(
+  yawPart,
+  x = 207mm,
+  y = 195mm,
+  global = true,
+)
+lidStand = rotate(
+  columnPart,
+  axis = Z,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(x = 220mm, y = 235mm, global = true)
+
+plateParts = [
+  base,
+  xtSupport,
+  pitchStand,
+  centralSupport,
+  yawTower,
+  lidStand
+]
+printLayout = rotate(
+  plateParts,
+  axis = Z,
+  angle = 180deg,
+  global = true,
+)
+  |> translate(x = 256mm, y = 256mm, global = true)

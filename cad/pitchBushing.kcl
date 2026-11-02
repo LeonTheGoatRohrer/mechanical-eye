@@ -1,0 +1,13 @@
+// Replaceable pitch bearing sleeve
+// 8 mm printed trunnion, 0.3 mm diametral running clearance; flange retained by axial stack.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import sleeve from "mechanismProfiles.kcl"
+import cylinder from "profiles.kcl"
+blank = cylinder(radiusValue = 6mm, height = 8mm)
+flange = cylinder(radiusValue = 7.5mm, height = 1mm)
+combined = union([blank, flange])
+bore = cylinder(radiusValue = 4.15mm, height = 10mm)
+  |> translate(z = -1mm, global = true)
+pitchBushing = subtract([combined], tools = [bore])
+  |> appearance(color = "#353539")

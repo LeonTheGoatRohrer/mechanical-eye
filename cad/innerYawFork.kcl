@@ -1,0 +1,82 @@
+// Compact internal yaw fork
+// Continuous U profile with centre yaw bore and opposed pitch journals.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+forkProfile = sketch(on = XZ) {
+  bottom = line(start = [var -22mm, var -27mm], end = [var 22mm, var -27mm])
+  rightBevel = line(start = [var 22mm, var -27mm], end = [var 26mm, var -23mm])
+  outerRight = line(start = [var 26mm, var -23mm], end = [var 26mm, var 8mm])
+  topRight = line(start = [var 26mm, var 8mm], end = [var 22mm, var 8mm])
+  innerRight = line(start = [var 22mm, var 8mm], end = [var 22mm, var -23mm])
+  floor = line(start = [var 22mm, var -23mm], end = [var -22mm, var -23mm])
+  innerLeft = line(start = [var -22mm, var -23mm], end = [var -22mm, var 8mm])
+  topLeft = line(start = [var -22mm, var 8mm], end = [var -26mm, var 8mm])
+  outerLeft = line(start = [var -26mm, var 8mm], end = [var -26mm, var -23mm])
+  leftBevel = line(start = [var -26mm, var -23mm], end = [var -22mm, var -27mm])
+  coincident([bottom.end, rightBevel.start])
+  coincident([rightBevel.end, outerRight.start])
+  coincident([outerRight.end, topRight.start])
+  coincident([topRight.end, innerRight.start])
+  coincident([innerRight.end, floor.start])
+  coincident([floor.end, innerLeft.start])
+  coincident([innerLeft.end, topLeft.start])
+  coincident([topLeft.end, outerLeft.start])
+  coincident([outerLeft.end, leftBevel.start])
+  coincident([leftBevel.end, bottom.start])
+  horizontal(bottom)
+  vertical(outerRight)
+  horizontal(topRight)
+  vertical(innerRight)
+  horizontal(floor)
+  vertical(innerLeft)
+  horizontal(topLeft)
+  vertical(outerLeft)
+  horizontalDistance([ORIGIN, bottom.start]) == -22mm
+  verticalDistance([ORIGIN, bottom.start]) == -27mm
+  distance([bottom.start, bottom.end]) == 44mm
+  distance([outerRight.start, outerRight.end]) == 31mm
+  horizontalDistance([rightBevel.start, rightBevel.end]) == 4mm
+  verticalDistance([rightBevel.start, rightBevel.end]) == 4mm
+  verticalDistance([leftBevel.start, leftBevel.end]) == -4mm
+  distance([topLeft.start, topLeft.end]) == 4mm
+  distance([topRight.start, topRight.end]) == 4mm
+  distance([innerRight.start, innerRight.end]) == 31mm
+  distance([floor.start, floor.end]) == 44mm
+  distance([innerLeft.start, innerLeft.end]) == 31mm
+}
+forkBlank = extrude(
+  region(
+    segments = [
+      forkProfile.bottom,
+      forkProfile.rightBevel
+    ],
+    intersectionIndex = -1,
+    direction = CCW,
+  ),
+  length = 12mm,
+  symmetric = true,
+)
+hide(forkProfile)
+arm = plate(width = 10mm, depth = 24mm, height = 3.8mm)
+  |> translate(
+       x = 19mm,
+       y = 8mm,
+       z = -26.9mm,
+       global = true,
+     )
+blank = union([forkBlank, arm])
+yawBore = cylinder(radiusValue = 3.15mm, height = 10mm)
+  |> translate(z = -30mm, global = true)
+pitchBore = cylinder(radiusValue = 2.15mm, height = 60mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -30mm, global = true)
+ballBolt = cylinder(radiusValue = 1.6mm, height = 10mm)
+  |> translate(
+       x = 20mm,
+       y = 16mm,
+       z = -30mm,
+       global = true,
+     )
+innerYawFork = subtract([blank], tools = [yawBore, pitchBore, ballBolt])
+  |> appearance(color = "#242428")

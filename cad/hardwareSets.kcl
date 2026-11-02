@@ -1,0 +1,34 @@
+// Assembly fastener sets
+// Simplified hardware with cosmetic threads; shoulder lengths and purchased availability require confirmation.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+import sleeve, screw from "mechanismProfiles.kcl"
+import hexNut from "fastenerProfiles.kcl"
+export fn boltedJoint(diameter, grip, length, acrossFlats, nutHeight) {
+  bolt = screw(shankDiameter = diameter, length = length)
+    |> translate(z = -0.5mm, global = true)
+  washerFront = sleeve(outerDiameter = 2.3 * diameter, innerDiameter = diameter + 0.2mm, length = 0.5mm)
+    |> translate(z = -0.5mm, global = true)
+    |> appearance(color = "#989DA1")
+  washerRear = clone(washerFront)
+    |> translate(z = grip + 0.5mm, global = true)
+  nut = hexNut(acrossFlats = acrossFlats, thickness = nutHeight, boreDiameter = diameter)
+    |> translate(z = grip + 0.5mm, global = true)
+  return [bolt, washerFront, washerRear, nut]
+}
+export fn shoulderJoint(shoulderLength) {
+  shoulder = cylinder(radiusValue = 2mm, height = shoulderLength)
+  thread = cylinder(radiusValue = 1.5mm, height = 6.1mm)
+    |> translate(z = shoulderLength - 0.1mm, global = true)
+  head = cylinder(radiusValue = 4mm, height = 3mm)
+    |> translate(z = -3mm, global = true)
+  bolt = union([shoulder, thread, head])
+    |> appearance(color = "#969DA3")
+  washer = sleeve(outerDiameter = 7mm, innerDiameter = 3.2mm, length = 0.5mm)
+    |> translate(z = shoulderLength, global = true)
+    |> appearance(color = "#969DA3")
+  nut = hexNut(acrossFlats = 5.5mm, thickness = 2.4mm, boreDiameter = 3mm)
+    |> translate(z = shoulderLength + 0.5mm, global = true)
+  return [bolt, washer, nut]
+}

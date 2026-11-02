@@ -1,0 +1,34 @@
+// Supported yaw spindle
+// Printed journal with bolted flange and replaceable horn adapter interface, no servo spline.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder, plate from "profiles.kcl"
+shaft = cylinder(radiusValue = 5mm, height = 27mm)
+upperFlange = cylinder(radiusValue = 12mm, height = 4mm)
+  |> translate(z = 23mm, global = true)
+blank = union([shaft, upperFlange])
+keyFlat = plate(width = 20mm, depth = 10mm, height = 5mm)
+  |> translate(y = 8.8mm, z = -0.5mm, global = true)
+centerBore = cylinder(radiusValue = 1.7mm, height = 30mm)
+  |> translate(z = -1mm, global = true)
+flangeBoreA = cylinder(radiusValue = 1.7mm, height = 30mm)
+  |> translate(x = -8mm, z = -1mm, global = true)
+flangeBoreB = clone(flangeBoreA)
+  |> translate(x = 16mm, global = true)
+crossBore = cylinder(radiusValue = 1.1mm, height = 14mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -7mm, z = 2.5mm, global = true)
+hornScrewRelief = cylinder(radiusValue = 3.1mm, height = 1.5mm)
+  |> translate(z = -0.2mm, global = true)
+yawSpindle = subtract(
+  [blank],
+  tools = [
+    centerBore,
+    flangeBoreA,
+    flangeBoreB,
+    keyFlat,
+    crossBore,
+    hornScrewRelief
+  ],
+)
+  |> appearance(color = "#242428")

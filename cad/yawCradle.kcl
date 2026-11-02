@@ -1,0 +1,88 @@
+// Yaw bridge and pitch carrier
+// Independent pitch journals with a rear-mounted carried servo, no spatially forced linkage.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+bridge = plate(width = 110mm, depth = 18mm, height = 8mm)
+  |> translate(z = -60.5mm, global = true)
+leftUpright = plate(width = 8mm, depth = 22mm, height = 74.5mm)
+  |> translate(x = -51mm, z = -60.5mm, global = true)
+rightUpright = clone(leftUpright)
+  |> translate(x = 102mm, y = 85mm, global = true)
+rightBoom = plate(width = 8mm, depth = 110mm, height = 22mm)
+  |> translate(
+       x = 51mm,
+       y = 42.5mm,
+       z = -8mm,
+       global = true,
+     )
+rightFloor = plate(width = 8mm, depth = 96mm, height = 8mm)
+  |> translate(
+       x = 51mm,
+       y = 42.5mm,
+       z = -60.5mm,
+       global = true,
+     )
+rearRail = plate(width = 8mm, depth = 90mm, height = 8mm)
+  |> translate(
+       x = -51mm,
+       y = 38mm,
+       z = -25mm,
+       global = true,
+     )
+frontPost = plate(width = 8mm, depth = 8mm, height = 42mm)
+  |> translate(
+       x = -51mm,
+       y = 21mm,
+       z = -25mm,
+       global = true,
+     )
+rearPost = clone(frontPost)
+  |> translate(y = 58mm, global = true)
+blank = union([
+  bridge,
+  leftUpright,
+  rightUpright,
+  rightBoom,
+  rightFloor,
+  rearRail,
+  frontPost,
+  rearPost
+])
+pitchBore = cylinder(radiusValue = 6.1mm, height = 120mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -60mm, global = true)
+yawBore = cylinder(radiusValue = 1.7mm, height = 12mm)
+  |> translate(z = -62.5mm, global = true)
+yawKeyA = cylinder(radiusValue = 1.7mm, height = 12mm)
+  |> translate(x = -8mm, z = -62.5mm, global = true)
+yawKeyB = clone(yawKeyA)
+  |> translate(x = 16mm, global = true)
+servoHoleA = cylinder(radiusValue = 1.7mm, height = 12mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -57mm,
+       y = 21mm,
+       z = -12mm,
+       global = true,
+     )
+servoHoleB = clone(servoHoleA)
+  |> translate(y = 58mm, global = true)
+servoHoleC = clone(servoHoleA)
+  |> translate(z = 24mm, global = true)
+servoHoleD = clone(servoHoleB)
+  |> translate(z = 24mm, global = true)
+yawCradle = subtract(
+  [blank],
+  tools = [
+    pitchBore,
+    yawBore,
+    yawKeyA,
+    yawKeyB,
+    servoHoleA,
+    servoHoleB,
+    servoHoleC,
+    servoHoleD
+  ],
+)
+  |> appearance(color = "#242428")

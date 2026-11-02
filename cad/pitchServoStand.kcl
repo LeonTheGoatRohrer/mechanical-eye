@@ -1,0 +1,52 @@
+// Fixed pitch servo stand
+// The pitch servo no longer follows yaw; two mounting pads avoid the neighbouring feet.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import centerHeight from "assemblyParameters.kcl"
+frontFoot = plate(width = 36mm, depth = 12mm, height = 4mm)
+  |> translate(x = -4mm, y = -29mm, global = true)
+rearFoot = clone(frontFoot)
+  |> translate(y = 58mm, global = true)
+front = plate(width = 8mm, depth = 10mm, height = centerHeight + 10mm)
+  |> translate(y = -29mm, global = true)
+rear = clone(front)
+  |> translate(y = 58mm, global = true)
+rail = plate(width = 8mm, depth = 66mm, height = 8mm)
+  |> translate(z = centerHeight - 29mm, global = true)
+blank = union([frontFoot, rearFoot, front, rear, rail])
+baseA = cylinder(radiusValue = 2.2mm, height = 6mm)
+  |> translate(
+       x = -14mm,
+       y = -29mm,
+       z = -1mm,
+       global = true,
+     )
+baseB = clone(baseA)
+  |> translate(y = 58mm, global = true)
+mountA = cylinder(radiusValue = 1.7mm, height = 12mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(
+       x = -6mm,
+       y = -29mm,
+       z = centerHeight - 18mm,
+       global = true,
+     )
+mountB = clone(mountA)
+  |> translate(y = 58mm, global = true)
+mountC = clone(mountA)
+  |> translate(z = 24mm, global = true)
+mountD = clone(mountA)
+  |> translate(y = 58mm, z = 24mm, global = true)
+pitchServoStand = subtract(
+  [blank],
+  tools = [
+    baseA,
+    baseB,
+    mountA,
+    mountB,
+    mountC,
+    mountD
+  ],
+)
+  |> appearance(color = "#242428")

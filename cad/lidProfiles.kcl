@@ -1,0 +1,69 @@
+// Integral spherical eyelid family
+// Continuous revolved shell and side web; independent journal and planar crank connection.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+export fn drivenLid(outerRadius, wall, halfWidth, hubX, braceRadius, braceAngle, driveRadius, driveAngle) {
+  bandProfile = sketch(on = XY) {
+    outerArc = arc(start = [var 32mm, var 30mm], end = [var -32mm, var 30mm], center = [var 0mm, var 0mm])
+    innerArc = arc(
+      start = [var -32mm, var 27mm],
+      end = [var 32mm, var 27mm],
+      center = [var 0mm, var 0mm],
+      direction = CW,
+    )
+    leftEdge = line(start = [var -32mm, var 30mm], end = [var -32mm, var 27mm])
+    innerShelf = line(start = [var 32mm, var 27mm], end = [var 60mm, var 27mm])
+    innerDrop = line(start = [var 60mm, var 27mm], end = [var 60mm, var 3.15mm])
+    hubFoot = line(start = [var 60mm, var 3.15mm], end = [var 64mm, var 3.15mm])
+    outerRise = line(start = [var 64mm, var 3.15mm], end = [var 64mm, var 30mm])
+    outerShelf = line(start = [var 64mm, var 30mm], end = [var 32mm, var 30mm])
+    coincident([outerArc.center, ORIGIN])
+    coincident([innerArc.center, outerArc.center])
+    radius(outerArc) == outerRadius
+    radius(innerArc) == outerRadius - wall
+    horizontalDistance([ORIGIN, outerArc.start]) == halfWidth
+    horizontalDistance([ORIGIN, outerArc.end]) == -halfWidth
+    horizontalDistance([ORIGIN, innerArc.start]) == -halfWidth
+    horizontalDistance([ORIGIN, innerArc.end]) == halfWidth
+    coincident([outerArc.end, leftEdge.start])
+    coincident([leftEdge.end, innerArc.start])
+    coincident([innerArc.end, innerShelf.start])
+    horizontal(innerShelf)
+    horizontalDistance([ORIGIN, innerShelf.end]) == hubX
+    coincident([innerShelf.end, innerDrop.start])
+    vertical(innerDrop)
+    verticalDistance([ORIGIN, innerDrop.end]) == 3.15mm
+    coincident([innerDrop.end, hubFoot.start])
+    horizontal(hubFoot)
+    horizontalDistance([ORIGIN, hubFoot.end]) == hubX + 4mm
+    coincident([hubFoot.end, outerRise.start])
+    vertical(outerRise)
+    horizontal([outerRise.end, outerArc.start])
+    coincident([outerRise.end, outerShelf.start])
+    coincident([outerShelf.end, outerArc.start])
+  }
+  shellWithWeb = revolve(
+    region(
+      segments = [
+        bandProfile.outerArc,
+        bandProfile.leftEdge
+      ],
+      intersectionIndex = -1,
+      direction = CCW,
+    ),
+    axis = X,
+    angle = 100deg,
+  )
+  hide(bandProfile)
+  boltA = cylinder(radiusValue = 1.7mm, height = 6mm)
+    |> rotate(axis = Y, angle = 90deg, global = true)
+    |> translate(x = hubX - 1mm, y = 15mm, global = true)
+    |> rotate(axis = X, angle = 25deg, global = true)
+  boltB = cylinder(radiusValue = 1.7mm, height = 6mm)
+    |> rotate(axis = Y, angle = 90deg, global = true)
+    |> translate(x = hubX - 1mm, y = 15mm, global = true)
+    |> rotate(axis = X, angle = 75deg, global = true)
+  return subtract([shellWithWeb], tools = [boltA, boltB])
+    |> appearance(color = "#252529")
+}

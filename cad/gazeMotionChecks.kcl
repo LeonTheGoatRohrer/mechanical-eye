@@ -1,0 +1,33 @@
+// Grid check for the fixed-servo linkage
+// Analytic rod closure and servo travel only; not a solid-contact or dynamics simulation.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import gazeSolution from "gazeKinematics.kcl"
+fn checkPose(@index) {
+  yaw = (floor(index / 31_) - 25_) * 1deg
+  pitch = (index % 31_ - 15_) * 1deg
+  result = gazeSolution(yaw = yaw, pitch = pitch)
+  assert(result.closure, isEqualTo = 5693_, tolerance = 0.00001_)
+  assert(result.theta, isGreaterThan = -35deg, isLessThan = 35deg)
+  assert(result.transmission, isGreaterThan = -0.85_, isLessThan = 0.85_)
+  assert(result.heading - yaw, isGreaterThan = -38deg, isLessThan = 38deg)
+  assert(result.heading, isGreaterThan = -38deg, isLessThan = 38deg)
+  assert(20mm * cos(yaw) - (16mm * sin(yaw)), isGreaterThan = 10mm)
+  yawRodX = 20mm * cos(yaw) - (16mm * sin(yaw))
+  assert(yawRodX - 4mm - 5mm, isGreaterThan = 2mm)
+  frontFraction = (44mm - result.y) / (result.inputY - result.y)
+  rearFraction = (56mm - result.y) / (result.inputY - result.y)
+  xAtFront = result.x + (-20mm - result.x) * frontFraction
+  xAtRear = result.x + (-20mm - result.x) * rearFraction
+  assert(-5mm - (xAtFront + 6mm), isGreaterThan = 2mm)
+  assert(-5mm - (xAtRear + 6mm), isGreaterThan = 2mm)
+  pitchMagnitude = if pitch < 0deg {
+    -pitch
+  } else {
+    pitch
+  }
+  frameRearMostY = -14mm * cos(pitchMagnitude) + 14mm * sin(pitchMagnitude)
+  assert(-6mm - frameRearMostY, isGreaterThan = 3mm)
+  return result.theta
+}
+checkedAngles = map([0..1580], f = checkPose)

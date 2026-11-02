@@ -1,0 +1,8 @@
+// Lower eyelid envelope
+// Radially offset overlapping shell study; not a finished manufacturing part.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import sphericalSector from "profiles.kcl"
+import eyeRadius, lidRadialClearance, lidWall, lidInterlayerGap from "parameters.kcl"
+lowerLid = sphericalSector(outerRadius = eyeRadius + lidRadialClearance + 2 * lidWall + lidInterlayerGap, wall = lidWall, sweepAngle = 100deg)
+  |> appearance(color = "#242424")

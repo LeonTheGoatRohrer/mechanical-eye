@@ -1,0 +1,38 @@
+// Removable yaw horn coupling
+// D-flat spindle socket, axial retaining screw and provisional original-horn bolt pattern.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import hornHoleRadiusUnverified from "assemblyParameters.kcl"
+blank = cylinder(radiusValue = 14mm, height = 7mm)
+socketRound = cylinder(radiusValue = 5.15mm, height = 6mm)
+  |> translate(z = 2.5mm, global = true)
+keySide = plate(width = 20mm, depth = 10mm, height = 8mm)
+  |> translate(y = 8.95mm, z = 1.5mm, global = true)
+socket = subtract([socketRound], tools = [keySide])
+centerBore = cylinder(radiusValue = 3.1mm, height = 9mm)
+  |> translate(z = -1mm, global = true)
+boltA = cylinder(radiusValue = 1.2mm, height = 9mm)
+  |> translate(x = hornHoleRadiusUnverified, z = -1mm, global = true)
+boltB = clone(boltA)
+  |> translate(x = -2 * hornHoleRadiusUnverified, global = true)
+nutPocketA = cylinder(radiusValue = 2.4mm, height = 3mm)
+  |> translate(x = hornHoleRadiusUnverified, z = 4.7mm, global = true)
+nutPocketB = clone(nutPocketA)
+  |> translate(x = -2 * hornHoleRadiusUnverified, global = true)
+crossBore = cylinder(radiusValue = 1.1mm, height = 32mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -16mm, z = 5mm, global = true)
+yawAdapter = subtract(
+  [blank],
+  tools = [
+    socket,
+    centerBore,
+    boltA,
+    boltB,
+    nutPocketA,
+    nutPocketB,
+    crossBore
+  ],
+)
+  |> appearance(color = "#29292D")

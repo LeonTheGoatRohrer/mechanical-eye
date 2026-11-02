@@ -1,0 +1,38 @@
+// Replaceable eyelid crank family
+// Two M3 shell bolts and an M6 running journal, separate from the curved shell for service.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder, plate from "profiles.kcl"
+import link from "mechanismProfiles.kcl"
+export fn lidHub(armRadius, armAngle) {
+  hub = cylinder(radiusValue = 20mm, height = 4mm)
+  arm = plate(width = armRadius + 5mm, depth = 10mm, height = 4mm)
+    |> translate(x = (armRadius + 5mm) / 2, global = true)
+    |> rotate(axis = Z, angle = armAngle, global = true)
+  blank = union([hub, arm])
+  bore = cylinder(radiusValue = 3.15mm, height = 6mm)
+    |> translate(z = -1mm, global = true)
+  boltA = cylinder(radiusValue = 1.7mm, height = 6mm)
+    |> translate(
+         x = 15mm * cos(25deg),
+         y = 15mm * sin(25deg),
+         z = -1mm,
+         global = true,
+       )
+  boltB = cylinder(radiusValue = 1.7mm, height = 6mm)
+    |> translate(
+         x = 15mm * cos(75deg),
+         y = 15mm * sin(75deg),
+         z = -1mm,
+         global = true,
+       )
+  outputBore = cylinder(radiusValue = 2.15mm, height = 6mm)
+    |> translate(
+         x = armRadius * cos(armAngle),
+         y = armRadius * sin(armAngle),
+         z = -1mm,
+         global = true,
+       )
+  return subtract([blank], tools = [bore, boltA, boltB, outputBore])
+    |> appearance(color = "#29292D")
+}

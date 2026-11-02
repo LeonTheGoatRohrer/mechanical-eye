@@ -1,0 +1,19 @@
+// Bolted cable guide
+// Rear exit guide with open insertion slot; service-loop clearance must be checked on the actual cables.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+foot = plate(width = 30mm, depth = 16mm, height = 4mm)
+guide = plate(width = 12mm, depth = 10mm, height = 12mm)
+blank = union([foot, guide])
+bore = cylinder(radiusValue = 3mm, height = 14mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(y = 7mm, z = 8mm, global = true)
+slot = plate(width = 2mm, depth = 14mm, height = 7mm)
+  |> translate(z = 8mm, global = true)
+boltA = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(x = -11mm, z = -1mm, global = true)
+boltB = clone(boltA)
+  |> translate(x = 22mm, global = true)
+cableClip = subtract([blank], tools = [bore, slot, boltA, boltB])
+  |> appearance(color = "#29292D")

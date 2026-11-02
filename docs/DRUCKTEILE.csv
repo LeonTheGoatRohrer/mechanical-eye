@@ -1,0 +1,35 @@
+platte,anzahl,teil,quelle,hinweis
+1,1,Tischgrundplatte,tableBase.kcl,244 x 164 x 6 mm
+1,1,XT-Halter,xtSaddle.kcl,
+1,1,Nickservostaender,pitchServoStand.kcl,
+1,1,Zentrale Blicklagerung,fixedGazeSupport.kcl,
+1,1,Gierservostaender,yawServoTower.kcl,
+1,1,Lidsaeule,lidColumn.kcl,
+2,1,Oberlid,upperLid.kcl,
+2,1,Unterlid,lowerLid.kcl,
+2,2,Giergestaenge-Haelfte,yawSocketRod.kcl,zwei Haelften ergeben ein Gestaenge
+2,2,Nickgestaenge-Haelfte,pitchSocketRod.kcl,zwei Haelften ergeben ein Gestaenge
+2,1,Augentraeger,eyeCarrier.kcl,
+2,1,Innere Giergabel,innerYawFork.kcl,
+2,1,Oberlidnabe,upperLidHub.kcl,
+2,1,Unterlidnabe,lowerLidHub.kcl,
+2,2,Hitec-Montageplatte,hitecMount.kcl,
+2,2,XT-Klemmbuegel,xtStrap.kcl,
+2,1,Oberlidgestaenge,upperBlinkRod.kcl,
+2,1,Unterlidgestaenge,lowerBlinkRod.kcl,
+2,1,Blinkkurbel,blinkCrank.kcl,
+2,4,Tischfuss,tableFoot.kcl,
+2,1,Gier-Hornadapter,yawDriveAdapter.kcl,
+2,1,Nick-Hornadapter,pitchDriveAdapter.kcl,
+2,1,Kabelklemme,cableClip.kcl,
+2,1,Pupille,pupil.kcl,
+2,4,Gelenkkugel,gazeJointBall.kcl,
+2,8,Konischer Kugelabstandhalter,gazeBallSpacer.kcl,
+2,4,Nick-Montagedistanz,printPlate02Black.kcl,AD8 ID3.4 Laenge3 mm
+2,2,Nick-Anlaufscheibe,printPlate02Black.kcl,AD7 ID4.3 Laenge2 mm
+2,2,Gier-Anlaufscheibe,printPlate02Black.kcl,AD12 ID6.3 Laenge1 mm
+2,1,Liddistanz vorne,printPlate02Black.kcl,AD10 ID6.3 Laenge1.8 mm
+2,1,Liddistanz mitte,printPlate02Black.kcl,AD10 ID6.3 Laenge4.3 mm
+2,1,Liddistanz hinten,printPlate02Black.kcl,AD10 ID6.3 Laenge1.3 mm
+2,1,Oberlid-Eingangsdistanz,printPlate02Black.kcl,AD8 ID4.3 Laenge13 mm
+3,1,Weisse Augenschale,eyeFront.kcl,

@@ -1,0 +1,17 @@
+// Hitec round horn envelope UNVERIFIED
+// Replace dimensions after measuring the owned horn; this is not a printable spline.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+import hornHoleRadiusUnverified, hornThicknessUnverified from "assemblyParameters.kcl"
+blank = cylinder(radiusValue = 11mm, height = hornThicknessUnverified)
+centerBore = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(z = -1mm, global = true)
+holeA = cylinder(radiusValue = 1.1mm, height = 6mm)
+  |> translate(x = hornHoleRadiusUnverified, z = -1mm, global = true)
+holeB = clone(holeA)
+  |> translate(x = -2 * hornHoleRadiusUnverified, global = true)
+shaftSeat = cylinder(radiusValue = 3mm, height = 1.5mm)
+  |> translate(z = -0.5mm, global = true)
+hornReference = subtract([blank], tools = [centerBore, holeA, holeB, shaftSeat])
+  |> appearance(color = "#82878B")

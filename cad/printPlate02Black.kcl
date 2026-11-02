@@ -1,0 +1,399 @@
+// Black print plate 2
+// All 49 remaining black printed components; separate bodies, no hardware or test coupons.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import "upperLid.kcl" as upperLidPart
+import "lowerLid.kcl" as lowerLidPart
+import "yawSocketRod.kcl" as yawRodPart
+import "pitchSocketRod.kcl" as pitchRodPart
+import "eyeCarrier.kcl" as carrierPart
+import "innerYawFork.kcl" as forkPart
+import "upperLidHub.kcl" as upperHubPart
+import "lowerLidHub.kcl" as lowerHubPart
+import "hitecMount.kcl" as mountPart
+import "xtStrap.kcl" as strapPart
+import "upperBlinkRod.kcl" as upperBlinkPart
+import "lowerBlinkRod.kcl" as lowerBlinkPart
+import "blinkCrank.kcl" as crankPart
+import "tableFoot.kcl" as footPart
+import "yawDriveAdapter.kcl" as yawAdapterPart
+import "pitchDriveAdapter.kcl" as pitchAdapterPart
+import "cableClip.kcl" as clipPart
+import "pupil.kcl" as pupilPart
+import "gazeJointBall.kcl" as ballPart
+import "gazeBallSpacer.kcl" as ballSpacerPart
+import sleeve from "mechanismProfiles.kcl"
+
+yawRodCopy = clone(yawRodPart)
+pitchRodCopy = clone(pitchRodPart)
+mountCopy = clone(mountPart)
+strapCopy = clone(strapPart)
+footCopyB = clone(footPart)
+footCopyC = clone(footPart)
+footCopyD = clone(footPart)
+ballCopyB = clone(ballPart)
+ballCopyC = clone(ballPart)
+ballCopyD = clone(ballPart)
+spacerCopyB = clone(ballSpacerPart)
+spacerCopyC = clone(ballSpacerPart)
+spacerCopyD = clone(ballSpacerPart)
+spacerCopyE = clone(ballSpacerPart)
+spacerCopyF = clone(ballSpacerPart)
+spacerCopyG = clone(ballSpacerPart)
+spacerCopyH = clone(ballSpacerPart)
+
+upperLid = translate(
+  upperLidPart,
+  x = 48mm,
+  y = 41mm,
+  global = true,
+)
+lowerLid = translate(
+  lowerLidPart,
+  x = 168mm,
+  y = 30mm,
+  global = true,
+)
+yawRodA = rotate(
+  yawRodPart,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(x = 20mm, y = 97mm, global = true)
+yawRodB = rotate(
+  yawRodCopy,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(x = 44mm, y = 97mm, global = true)
+pitchRodA = rotate(
+  pitchRodPart,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(x = 68mm, y = 97mm, global = true)
+pitchRodB = rotate(
+  pitchRodCopy,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(x = 92mm, y = 97mm, global = true)
+carrier = translate(
+  carrierPart,
+  x = 148mm,
+  y = 115mm,
+  z = 13mm,
+  global = true,
+)
+fork = translate(
+  forkPart,
+  x = 220mm,
+  y = 95mm,
+  z = 27mm,
+  global = true,
+)
+upperHub = translate(
+  upperHubPart,
+  x = 140mm,
+  y = 152mm,
+  global = true,
+)
+lowerHub = translate(
+  lowerHubPart,
+  x = 228mm,
+  y = 171mm,
+  global = true,
+)
+yawAdapter = translate(
+  yawAdapterPart,
+  x = 185mm,
+  y = 130mm,
+  global = true,
+)
+pitchAdapter = rotate(
+  pitchAdapterPart,
+  axis = Z,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(x = 180mm, y = 185mm, global = true)
+mountA = translate(
+  mountPart,
+  x = 48mm,
+  y = 202mm,
+  global = true,
+)
+mountB = translate(
+  mountCopy,
+  x = 128mm,
+  y = 202mm,
+  global = true,
+)
+strapA = translate(
+  strapPart,
+  x = 42mm,
+  y = 228mm,
+  global = true,
+)
+strapB = translate(
+  strapCopy,
+  x = 42mm,
+  y = 246mm,
+  global = true,
+)
+upperBlink = translate(
+  upperBlinkPart,
+  x = 86mm,
+  y = 239mm,
+  global = true,
+)
+lowerBlink = translate(
+  lowerBlinkPart,
+  x = 86mm,
+  y = 250mm,
+  global = true,
+)
+blinkCrank = translate(
+  crankPart,
+  x = 211mm,
+  y = 244mm,
+  global = true,
+)
+footA = rotate(
+  footPart,
+  axis = X,
+  angle = 180deg,
+  global = true,
+)
+  |> translate(
+       x = 176mm,
+       y = 207mm,
+       z = 8mm,
+       global = true,
+     )
+footB = rotate(
+  footCopyB,
+  axis = X,
+  angle = 180deg,
+  global = true,
+)
+  |> translate(
+       x = 198mm,
+       y = 207mm,
+       z = 8mm,
+       global = true,
+     )
+footC = rotate(
+  footCopyC,
+  axis = X,
+  angle = 180deg,
+  global = true,
+)
+  |> translate(
+       x = 220mm,
+       y = 207mm,
+       z = 8mm,
+       global = true,
+     )
+footD = rotate(
+  footCopyD,
+  axis = X,
+  angle = 180deg,
+  global = true,
+)
+  |> translate(
+       x = 242mm,
+       y = 207mm,
+       z = 8mm,
+       global = true,
+     )
+cableClip = translate(
+  clipPart,
+  x = 193mm,
+  y = 227mm,
+  global = true,
+)
+pupil = rotate(
+  pupilPart,
+  axis = X,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(
+       x = 245mm,
+       y = 242mm,
+       z = -33mm,
+       global = true,
+     )
+ballA = rotate(
+  ballPart,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(
+       x = 92mm,
+       y = 226mm,
+       z = 5.7mm,
+       global = true,
+     )
+ballB = rotate(
+  ballCopyB,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(
+       x = 110mm,
+       y = 226mm,
+       z = 5.7mm,
+       global = true,
+     )
+ballC = rotate(
+  ballCopyC,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(
+       x = 128mm,
+       y = 226mm,
+       z = 5.7mm,
+       global = true,
+     )
+ballD = rotate(
+  ballCopyD,
+  axis = Y,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(
+       x = 146mm,
+       y = 226mm,
+       z = 5.7mm,
+       global = true,
+     )
+ballSpacerA = rotate(
+  ballSpacerPart,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 119mm,
+       y = 40mm,
+       z = 4.3mm,
+       global = true,
+     )
+ballSpacerB = rotate(
+  spacerCopyB,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 119mm,
+       y = 54mm,
+       z = 4.3mm,
+       global = true,
+     )
+ballSpacerC = rotate(
+  spacerCopyC,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 30mm,
+       y = 9mm,
+       z = 4.3mm,
+       global = true,
+     )
+ballSpacerD = rotate(
+  spacerCopyD,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 40mm,
+       y = 9mm,
+       z = 4.3mm,
+       global = true,
+     )
+ballSpacerE = rotate(
+  spacerCopyE,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 50mm,
+       y = 9mm,
+       z = 4.3mm,
+       global = true,
+     )
+ballSpacerF = rotate(
+  spacerCopyF,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 60mm,
+       y = 9mm,
+       z = 4.3mm,
+       global = true,
+     )
+ballSpacerG = rotate(
+  spacerCopyG,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 70mm,
+       y = 9mm,
+       z = 4.3mm,
+       global = true,
+     )
+ballSpacerH = rotate(
+  spacerCopyH,
+  axis = Y,
+  angle = 90deg,
+  global = true,
+)
+  |> translate(
+       x = 80mm,
+       y = 9mm,
+       z = 4.3mm,
+       global = true,
+     )
+pitchMountSpacerA = sleeve(outerDiameter = 8mm, innerDiameter = 3.4mm, length = 3mm)
+  |> translate(x = 93mm, y = 9mm, global = true)
+pitchMountSpacerB = clone(pitchMountSpacerA)
+  |> translate(x = 13mm, global = true)
+pitchMountSpacerC = clone(pitchMountSpacerA)
+  |> translate(x = 26mm, global = true)
+pitchMountSpacerD = clone(pitchMountSpacerA)
+  |> translate(x = 39mm, global = true)
+pitchThrustA = sleeve(outerDiameter = 7mm, innerDiameter = 4.3mm, length = 2mm)
+  |> translate(x = 145mm, y = 9mm, global = true)
+pitchThrustB = clone(pitchThrustA)
+  |> translate(x = 13mm, global = true)
+yawThrustA = sleeve(outerDiameter = 12mm, innerDiameter = 6.3mm, length = 1mm)
+  |> translate(x = 175mm, y = 9mm, global = true)
+yawThrustB = clone(yawThrustA)
+  |> translate(x = 16mm, global = true)
+lidFrontSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 1.8mm)
+  |> translate(x = 207mm, y = 9mm, global = true)
+lidMiddleSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 4.3mm)
+  |> translate(x = 221mm, y = 9mm, global = true)
+lidRearSpacer = sleeve(outerDiameter = 10mm, innerDiameter = 6.3mm, length = 1.3mm)
+  |> translate(x = 235mm, y = 9mm, global = true)
+upperInputSpacer = sleeve(outerDiameter = 8mm, innerDiameter = 4.3mm, length = 13mm)
+  |> translate(x = 247mm, y = 9mm, global = true)

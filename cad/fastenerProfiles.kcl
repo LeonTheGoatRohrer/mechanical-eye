@@ -1,0 +1,42 @@
+// Simplified bought hex nut family
+// Nominal envelopes only; internal threads are cosmetic, not modeled helices.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+export fn hexNut(acrossFlats, thickness, boreDiameter) {
+  cornerRadius = acrossFlats / sqrt(3_)
+  hexProfile = sketch(on = XY) {
+    first = line(start = [var 3.175mm, var 0mm], end = [var 1.588mm, var 2.75mm])
+    top = line(start = [var 1.588mm, var 2.75mm], end = [var -1.588mm, var 2.75mm])
+    third = line(start = [var -1.588mm, var 2.75mm], end = [var -3.175mm, var 0mm])
+    fourth = line(start = [var -3.175mm, var 0mm], end = [var -1.588mm, var -2.75mm])
+    bottom = line(start = [var -1.588mm, var -2.75mm], end = [var 1.588mm, var -2.75mm])
+    sixth = line(start = [var 1.588mm, var -2.75mm], end = [var 3.175mm, var 0mm])
+    coincident([first.end, top.start])
+    coincident([top.end, third.start])
+    coincident([third.end, fourth.start])
+    coincident([fourth.end, bottom.start])
+    coincident([bottom.end, sixth.start])
+    coincident([sixth.end, first.start])
+    horizontal(top)
+    horizontal(bottom)
+    parallel([first, fourth])
+    parallel([third, sixth])
+    equalLength([first, top])
+    equalLength([first, third])
+    equalLength([first, fourth])
+    equalLength([first, bottom])
+    equalLength([first, sixth])
+    horizontalDistance([ORIGIN, first.start]) == cornerRadius
+    verticalDistance([ORIGIN, first.start]) == 0mm
+    verticalDistance([ORIGIN, top.start]) == acrossFlats / 2
+    distance([first.start, first.end]) == cornerRadius
+    horizontal([first.start, third.end])
+  }
+  blank = extrude(region(segments = [hexProfile.first, hexProfile.top], intersectionIndex = -1, direction = CCW), length = thickness)
+  hide(hexProfile)
+  bore = cylinder(radiusValue = boreDiameter / 2, height = thickness + 2mm)
+    |> translate(z = -1mm, global = true)
+  return subtract([blank], tools = [bore])
+    |> appearance(color = "#8C9298")
+}

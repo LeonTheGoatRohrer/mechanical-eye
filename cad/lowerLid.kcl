@@ -1,0 +1,16 @@
+// Lower driven eyelid
+// Neutral shell is installed at 193 degrees; its drive arm is then vertical.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import drivenLid from "lidProfiles.kcl"
+import shellGapRadial, lidThickness, lidGapRadial, lidTrimHalfWidth from "assemblyParameters.kcl"
+lowerLid = drivenLid(
+  outerRadius = 40mm + shellGapRadial + 2 * lidThickness + lidGapRadial,
+  wall = lidThickness,
+  halfWidth = lidTrimHalfWidth,
+  hubX = 72.5mm,
+  braceRadius = 36mm,
+  braceAngle = 90deg,
+  driveRadius = 36mm,
+  driveAngle = -103deg,
+)

@@ -1,0 +1,7 @@
+// Pitch original-horn adapter
+// Radius 24 mm; servo angle comes from the spatial rod equation, not directly from gaze pitch.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import hornAdapter from "gazeAdapterProfiles.kcl"
+import hornHoleRadiusUnverified from "assemblyParameters.kcl"
+pitchDriveAdapter = hornAdapter(reach = 24mm, phase = 0deg, hornRadius = hornHoleRadiusUnverified)

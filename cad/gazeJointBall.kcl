@@ -1,0 +1,36 @@
+// Replaceable spherical insert
+// Direct revolved bearing profile with M3 clearance and clamping faces.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+ballProfile = sketch(on = XY) {
+  sphereArc = arc(start = [var 5.7mm, var 1.874mm], end = [var -5.7mm, var 1.874mm], center = [var 0mm, var 0mm])
+  leftFace = line(start = [var -5.7mm, var 1.874mm], end = [var -5.7mm, var 1.6mm])
+  bore = line(start = [var -5.7mm, var 1.6mm], end = [var 5.7mm, var 1.6mm])
+  rightFace = line(start = [var 5.7mm, var 1.6mm], end = [var 5.7mm, var 1.874mm])
+  coincident([sphereArc.center, ORIGIN])
+  radius(sphereArc) == 6mm
+  horizontalDistance([ORIGIN, sphereArc.start]) == 5.7mm
+  horizontalDistance([ORIGIN, sphereArc.end]) == -5.7mm
+  coincident([sphereArc.end, leftFace.start])
+  coincident([leftFace.end, bore.start])
+  coincident([bore.end, rightFace.start])
+  coincident([rightFace.end, sphereArc.start])
+  vertical(leftFace)
+  vertical(rightFace)
+  horizontal(bore)
+  verticalDistance([ORIGIN, bore.start]) == 1.6mm
+}
+ballBlank = revolve(
+  region(
+    segments = [
+      ballProfile.sphereArc,
+      ballProfile.leftFace
+    ],
+    intersectionIndex = -1,
+    direction = CCW,
+  ),
+  axis = X,
+  angle = 360deg,
+)
+hide(ballProfile)
+jointBall = appearance(ballBlank, color = "#29292D")

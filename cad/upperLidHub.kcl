@@ -1,0 +1,6 @@
+// Upper eyelid crank
+// 20 mm output radius, two shell attachment screws.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import lidHub from "lidHubProfiles.kcl"
+upperLidHub = lidHub(armRadius = 20mm, armAngle = 35deg)

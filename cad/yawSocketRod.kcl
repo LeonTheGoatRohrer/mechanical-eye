@@ -1,0 +1,7 @@
+// Yaw split socket rod half
+// Two matching halves capture the balls; two transverse M2 bolts join the halves.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import socketHalf from "spatialJointProfiles.kcl"
+import jointDiametralGap from "assemblyParameters.kcl"
+yawSocketRod = socketHalf(length = 75mm, radialGap = jointDiametralGap / 2)

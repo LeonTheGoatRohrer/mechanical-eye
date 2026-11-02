@@ -1,0 +1,61 @@
+// Adjustable XT body saddle, PROVISIONAL
+// Clamp mounting avoids assuming Hitec ears; verify case, cable exit and shaft datum before printing.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import xtBodyLengthUnverified, xtBodyWidthUnverified, xtBodyHeightUnverified from "assemblyParameters.kcl"
+trayWidth = xtBodyHeightUnverified + 11mm
+trayDepth = xtBodyLengthUnverified + 16mm
+foot = plate(width = trayWidth, depth = trayDepth, height = 6mm)
+leftLeg = plate(width = 10mm, depth = 30mm, height = 120.5mm)
+  |> translate(x = -14mm, global = true)
+rightLeg = clone(leftLeg)
+  |> translate(x = 28mm, global = true)
+tray = plate(width = trayWidth, depth = trayDepth, height = 6mm)
+  |> translate(z = 120.5mm, global = true)
+frontFence = plate(width = trayWidth, depth = 4mm, height = xtBodyWidthUnverified + 6mm)
+  |> translate(y = -xtBodyLengthUnverified / 2 - 2.4mm, z = 120.5mm, global = true)
+rearFence = clone(frontFence)
+  |> translate(y = xtBodyLengthUnverified + 4.8mm, global = true)
+blank = union([
+  foot,
+  leftLeg,
+  rightLeg,
+  tray,
+  frontFence,
+  rearFence
+])
+baseA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(
+       x = -10mm,
+       y = -23mm,
+       z = -1mm,
+       global = true,
+     )
+baseB = clone(baseA)
+  |> translate(y = 46mm, global = true)
+strapA = cylinder(radiusValue = 1.7mm, height = 8mm)
+  |> translate(
+       x = -25mm,
+       y = -14mm,
+       z = 119.5mm,
+       global = true,
+     )
+strapB = clone(strapA)
+  |> translate(x = 50mm, global = true)
+strapC = clone(strapA)
+  |> translate(y = 28mm, global = true)
+strapD = clone(strapB)
+  |> translate(y = 28mm, global = true)
+xtSaddle = subtract(
+  [blank],
+  tools = [
+    baseA,
+    baseB,
+    strapA,
+    strapB,
+    strapC,
+    strapD
+  ],
+)
+  |> appearance(color = "#29292D")

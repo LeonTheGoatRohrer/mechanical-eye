@@ -1,0 +1,20 @@
+// Independent eyelid support column
+// Cantilever M6 shoulder axle and bolted tabletop foot; both lids share an axis but not a body.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+foot = plate(width = 24mm, depth = 82mm, height = 6mm)
+  |> translate(y = 30mm, global = true)
+column = plate(width = 8mm, depth = 18mm, height = 148mm)
+rearRib = plate(width = 8mm, depth = 14mm, height = 65mm)
+  |> translate(y = 12mm, global = true)
+blank = union([foot, column, rearRib])
+axleBore = cylinder(radiusValue = 3.2mm, height = 12mm)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -6mm, z = 139mm, global = true)
+footBoreA = cylinder(radiusValue = 2.2mm, height = 8mm)
+  |> translate(y = 28mm, z = -1mm, global = true)
+footBoreB = clone(footBoreA)
+  |> translate(y = 32mm, global = true)
+lidColumn = subtract([blank], tools = [axleBore, footBoreA, footBoreB])
+  |> appearance(color = "#242428")

@@ -1,0 +1,7 @@
+// Pitch split socket rod half
+// Fixed centre distance for spatial loop closure, not a telescoping visual link.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import socketHalf from "spatialJointProfiles.kcl"
+import jointDiametralGap from "assemblyParameters.kcl"
+pitchSocketRod = socketHalf(length = sqrt(5693_) * 1mm, radialGap = jointDiametralGap / 2)

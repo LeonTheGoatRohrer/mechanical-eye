@@ -1,0 +1,88 @@
+// Reusable manufacturing profiles
+// Repeated dimensional families; function sketches are not UI point-editable.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+export fn plate(width, depth, height) {
+  plateProfile = sketch(on = XY) {
+    bottom = line(start = [var -10mm, var -10mm], end = [var 10mm, var -10mm])
+    right = line(start = [var 10mm, var -10mm], end = [var 10mm, var 10mm])
+    top = line(start = [var 10mm, var 10mm], end = [var -10mm, var 10mm])
+    left = line(start = [var -10mm, var 10mm], end = [var -10mm, var -10mm])
+    coincident([bottom.end, right.start])
+    coincident([right.end, top.start])
+    coincident([top.end, left.start])
+    coincident([left.end, bottom.start])
+    horizontal(bottom)
+    horizontal(top)
+    vertical(left)
+    vertical(right)
+    horizontalDistance([ORIGIN, bottom.start]) == -width / 2
+    verticalDistance([ORIGIN, bottom.start]) == -depth / 2
+    distance([bottom.start, bottom.end]) == width
+    distance([right.start, right.end]) == depth
+  }
+  plateBody = extrude(
+    region(
+      segments = [
+        plateProfile.bottom,
+        plateProfile.right
+      ],
+      intersectionIndex = -1,
+      direction = CCW,
+    ),
+    length = height,
+  )
+  hide(plateProfile)
+  return plateBody
+}
+export fn cylinder(radiusValue, height) {
+  roundProfile = sketch(on = XY) {
+    perimeter = circle(center = [var 0mm, var 0mm], start = [var 5mm, var 0mm])
+    coincident([perimeter.center, ORIGIN])
+    radius(perimeter) == radiusValue
+    horizontal([perimeter.center, perimeter.start])
+  }
+  roundBody = extrude(region(segments = [roundProfile.perimeter]), length = height)
+  hide(roundProfile)
+  return roundBody
+}
+export fn sphericalSector(outerRadius, wall, sweepAngle) {
+  innerRadius = outerRadius - wall
+  sphereProfile = sketch(on = XY) {
+    outerArc = arc(start = [var 40mm, var 0mm], end = [var -40mm, var 0mm], center = [var 0mm, var 0mm])
+    innerArc = arc(
+      start = [var -38mm, var 0mm],
+      end = [var 38mm, var 0mm],
+      center = [var 0mm, var 0mm],
+      direction = CW,
+    )
+    leftEdge = line(start = [var -40mm, var 0mm], end = [var -38mm, var 0mm])
+    rightEdge = line(start = [var 38mm, var 0mm], end = [var 40mm, var 0mm])
+    coincident([outerArc.center, ORIGIN])
+    coincident([innerArc.center, outerArc.center])
+    radius(outerArc) == outerRadius
+    radius(innerArc) == innerRadius
+    horizontal([outerArc.start, outerArc.center])
+    horizontal([outerArc.end, outerArc.center])
+    horizontal([innerArc.start, innerArc.center])
+    horizontal([innerArc.end, innerArc.center])
+    coincident([outerArc.end, leftEdge.start])
+    coincident([leftEdge.end, innerArc.start])
+    coincident([innerArc.end, rightEdge.start])
+    coincident([rightEdge.end, outerArc.start])
+  }
+  sectorBody = revolve(
+    region(
+      segments = [
+        sphereProfile.outerArc,
+        sphereProfile.leftEdge
+      ],
+      intersectionIndex = -1,
+      direction = CCW,
+    ),
+    axis = X,
+    angle = sweepAngle,
+  )
+  hide(sphereProfile)
+  return sectorBody
+}

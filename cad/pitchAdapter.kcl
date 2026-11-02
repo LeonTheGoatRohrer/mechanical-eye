@@ -1,0 +1,23 @@
+// Pitch horn adapter
+// Bolts to the existing round horn, provisional two-hole pattern; no modeled spline.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+import cylinder from "profiles.kcl"
+import hornHoleRadiusUnverified from "assemblyParameters.kcl"
+arm = link(
+  pitch = 26mm,
+  width = 10mm,
+  thickness = 4mm,
+  boreDiameter = 4.3mm,
+)
+hub = cylinder(radiusValue = 10mm, height = 4mm)
+blank = union([arm, hub])
+centerBore = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(z = -1mm, global = true)
+holeA = cylinder(radiusValue = 1.2mm, height = 6mm)
+  |> translate(x = hornHoleRadiusUnverified, z = -1mm, global = true)
+holeB = clone(holeA)
+  |> translate(x = -2 * hornHoleRadiusUnverified, global = true)
+pitchAdapter = subtract([blank], tools = [centerBore, holeA, holeB])
+  |> appearance(color = "#29292D")

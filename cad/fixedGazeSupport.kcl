@@ -1,0 +1,38 @@
+// Stationary central support
+// Rear cantilever carries yaw bearing independently of the servo and anchors the camera cable.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+foot = plate(width = 36mm, depth = 20mm, height = 4mm)
+  |> translate(y = 48mm, global = true)
+post = plate(width = 10mm, depth = 12mm, height = 175mm)
+  |> translate(y = 50mm, global = true)
+boom = plate(width = 16mm, depth = 62mm, height = 4mm)
+  |> translate(y = 25mm, z = 104mm, global = true)
+journal = cylinder(radiusValue = 8mm, height = 3mm)
+  |> translate(z = 108mm, global = true)
+clipSeat = plate(width = 30mm, depth = 16mm, height = 4mm)
+  |> translate(y = 50mm, z = 171mm, global = true)
+blank = union([foot, post, boom, journal, clipSeat])
+axisBore = cylinder(radiusValue = 3.1mm, height = 12mm)
+  |> translate(z = 102mm, global = true)
+baseA = cylinder(radiusValue = 2.2mm, height = 6mm)
+  |> translate(
+       x = -13mm,
+       y = 50mm,
+       z = -1mm,
+       global = true,
+     )
+baseB = clone(baseA)
+  |> translate(x = 26mm, global = true)
+clipA = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(
+       x = -11mm,
+       y = 50mm,
+       z = 170mm,
+       global = true,
+     )
+clipB = clone(clipA)
+  |> translate(x = 22mm, global = true)
+fixedGazeSupport = subtract([blank], tools = [axisBore, baseA, baseB, clipA, clipB])
+  |> appearance(color = "#242428")

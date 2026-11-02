@@ -1,0 +1,62 @@
+// Removable front fascia
+// Curved upper silhouette and almond aperture; lower skirt screens the yaw drive.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import link from "mechanismProfiles.kcl"
+upper = link(
+  pitch = 108mm,
+  width = 112mm,
+  thickness = 4mm,
+  boreDiameter = 3.4mm,
+)
+  |> translate(x = -54mm, global = true)
+skirt = plate(width = 180mm, depth = 90mm, height = 4mm)
+  |> translate(y = -94mm, global = true)
+blank = union([upper, skirt])
+windowProfile = sketch(on = XY) {
+  upperArc = arc(
+    start = [var -31.3mm, var 0mm],
+    end = [var 31.3mm, var 0mm],
+    center = [var 0mm, var -28mm],
+    direction = CW,
+  )
+  lowerArc = arc(
+    start = [var 31.3mm, var 0mm],
+    end = [var -31.3mm, var 0mm],
+    center = [var 0mm, var 28mm],
+    direction = CW,
+  )
+  horizontalDistance([ORIGIN, upperArc.center]) == 0mm
+  verticalDistance([ORIGIN, upperArc.center]) == -28mm
+  horizontalDistance([ORIGIN, lowerArc.center]) == 0mm
+  verticalDistance([ORIGIN, lowerArc.center]) == 28mm
+  radius(upperArc) == 40.5mm
+  radius(lowerArc) == 40.5mm
+  coincident([upperArc.end, lowerArc.start])
+  coincident([lowerArc.end, upperArc.start])
+}
+windowTool = extrude(
+  region(
+    segments = [
+      windowProfile.upperArc,
+      windowProfile.lowerArc
+    ],
+    intersectionIndex = -1,
+    direction = CW,
+  ),
+  length = 6mm,
+)
+  |> translate(z = -1mm, global = true)
+lowerHoleA = cylinder(radiusValue = 1.7mm, height = 6mm)
+  |> translate(
+       x = -54mm,
+       y = -105mm,
+       z = -1mm,
+       global = true,
+     )
+lowerHoleB = clone(lowerHoleA)
+  |> translate(x = 108mm, global = true)
+hide(windowProfile)
+frontCover = subtract([blank], tools = [windowTool, lowerHoleA, lowerHoleB])
+  |> appearance(color = "#202024")

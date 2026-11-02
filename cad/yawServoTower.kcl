@@ -1,0 +1,55 @@
+// Fixed yaw servo tower
+// Two stiff side walls, through-bolted foot and side-loaded M3 nut pockets.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+import centerHeight from "assemblyParameters.kcl"
+foot = plate(width = 88mm, depth = 26mm, height = 4mm)
+left = plate(width = 8mm, depth = 32mm, height = centerHeight - 54mm)
+  |> translate(x = -29mm, global = true)
+right = clone(left)
+  |> translate(x = 58mm, global = true)
+blank = union([foot, left, right])
+baseA = cylinder(radiusValue = 2.2mm, height = 6mm)
+  |> translate(x = -38mm, z = -1mm, global = true)
+baseB = clone(baseA)
+  |> translate(x = 76mm, global = true)
+boltA = cylinder(radiusValue = 1.7mm, height = 16mm)
+  |> translate(
+       x = -29mm,
+       y = -12mm,
+       z = centerHeight - 68mm,
+       global = true,
+     )
+boltB = clone(boltA)
+  |> translate(x = 58mm, global = true)
+boltC = clone(boltA)
+  |> translate(y = 24mm, global = true)
+boltD = clone(boltA)
+  |> translate(x = 58mm, y = 24mm, global = true)
+slotA = plate(width = 8mm, depth = 5.8mm, height = 3mm)
+  |> translate(
+       x = -31mm,
+       y = -12mm,
+       z = centerHeight - 62mm,
+       global = true,
+     )
+slotB = clone(slotA)
+  |> translate(x = 62mm, global = true)
+slotC = clone(slotA)
+  |> translate(y = 24mm, global = true)
+slotD = clone(slotA)
+  |> translate(x = 62mm, y = 24mm, global = true)
+drilled = subtract(
+  [blank],
+  tools = [
+    baseA,
+    baseB,
+    boltA,
+    boltB,
+    boltC,
+    boltD
+  ],
+)
+yawServoTower = subtract([drilled], tools = [slotA, slotB, slotC, slotD])
+  |> appearance(color = "#242428")

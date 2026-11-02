@@ -1,0 +1,47 @@
+// Eye shell angular study
+// Analytic pose preview only: no bearings, drive linkage, shell fasteners or gimbal yet.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import "eyeHemisphere.kcl" as eyeFront
+import "upperLidStudy.kcl" as upperShell
+import "lowerLidStudy.kcl" as lowerShell
+import cylinder from "profiles.kcl"
+blinkFraction = 0.5
+studyYaw = -30deg
+studyPitch = -20deg
+rearBlank = clone(eyeFront)
+pupilBlank = clone(eyeFront)
+pupilTool = cylinder(radiusValue = 8mm, height = 12mm)
+  |> translate(z = 30mm, global = true)
+pupilCap = intersect([pupilBlank, pupilTool])
+pupilClearance = cylinder(radiusValue = 8.2mm, height = 12mm)
+  |> translate(z = 30mm, global = true)
+frontBlank = subtract([eyeFront], tools = [pupilClearance])
+whiteFront = rotate(
+  frontBlank,
+  axis = [1, 0, 0],
+  angle = 90deg,
+  global = true,
+)
+  |> rotate(axis = [1, 0, 0], angle = studyPitch, global = true)
+  |> rotate(axis = [0, 0, 1], angle = studyYaw, global = true)
+whiteRear = rearBlank
+  |> rotate(axis = [1, 0, 0], angle = -90deg, global = true)
+  |> rotate(axis = [1, 0, 0], angle = studyPitch, global = true)
+  |> rotate(axis = [0, 0, 1], angle = studyYaw, global = true)
+upperPose = rotate(
+  upperShell,
+  axis = [1, 0, 0],
+  angle = 55deg + blinkFraction * 27deg,
+  global = true,
+)
+lowerPose = rotate(
+  lowerShell,
+  axis = [1, 0, 0],
+  angle = 195deg - (blinkFraction * 15deg),
+  global = true,
+)
+pupilMarker = pupilCap
+  |> rotate(axis = [1, 0, 0], angle = 90deg + studyPitch, global = true)
+  |> rotate(axis = [0, 0, 1], angle = studyYaw, global = true)
+  |> appearance(color = "#161616")

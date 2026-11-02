@@ -1,0 +1,21 @@
+// Printed gaze ball-joint group
+// One printed ball and two printed tapered spacers, without fasteners.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import "gazeJointBall.kcl" as ballPart
+import "gazeBallSpacer.kcl" as spacerPart
+
+negativeSpacerBlank = clone(spacerPart)
+positiveSpacer = translate(spacerPart, x = 5.7mm, global = true)
+negativeSpacer = rotate(
+  negativeSpacerBlank,
+  axis = Z,
+  angle = 180deg,
+  global = true,
+)
+  |> translate(x = -5.7mm, global = true)
+printedBallJoint = [
+  ballPart,
+  positiveSpacer,
+  negativeSpacer
+]

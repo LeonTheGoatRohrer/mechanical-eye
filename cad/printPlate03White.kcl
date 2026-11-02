@@ -1,0 +1,18 @@
+// White print plate 3
+// Centred shell keeps the lower-left exclusion zone clear; rear edge on Z zero.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import "eyeFront.kcl" as shellPart
+
+eyeShell = rotate(
+  shellPart,
+  axis = X,
+  angle = -90deg,
+  global = true,
+)
+  |> translate(
+       x = 128mm,
+       y = 128mm,
+       z = -7mm,
+       global = true,
+     )

@@ -1,0 +1,12 @@
+// Recessed tabletop foot
+// Underside screw recess keeps fastener heads above the support plane; nonslip material remains to be selected.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+blank = cylinder(radiusValue = 9mm, height = 8mm)
+bore = cylinder(radiusValue = 2.2mm, height = 10mm)
+  |> translate(z = -1mm, global = true)
+recess = cylinder(radiusValue = 4.8mm, height = 5.8mm)
+  |> translate(z = -1mm, global = true)
+tableFoot = subtract([blank], tools = [bore, recess])
+  |> appearance(color = "#29292D")

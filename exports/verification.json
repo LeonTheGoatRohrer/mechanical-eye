@@ -1,0 +1,105 @@
+{
+  "source_obj_sha256": "184e53be32bc5f02b30b7ca50cb96606ded31e2e171a8b2721c41071a59a0c02",
+  "shell_object": "Unnamed-182",
+  "shell_transform": "x_plate=x_assembly+128; y_plate=z_assembly-17; z_plate=-y_assembly-7",
+  "source_plate01_sha256": "dcdc6f8333685072b11619d50afeded4264dbe9e6dbfe21e8da79ccaf25d5b4b",
+  "source_plate02_sha256": "baa66f6ccb06db807d9eb89be41b14fe27602bb44aa70b2055af1142f8a2df09",
+  "files": {
+    "exports/assembly/main.stl": {
+      "triangles": 302596,
+      "bounds_min_mm": [
+        -122.0,
+        -62.0,
+        -8.0
+      ],
+      "bounds_max_mm": [
+        146.5,
+        103.0,
+        193.0
+      ],
+      "dimensions_mm": [
+        268.5,
+        165.0,
+        201.0
+      ],
+      "connected_components_rounded_1e-5_mm": 237,
+      "boundary_edges": 0,
+      "edges_with_more_than_two_faces": 2354,
+      "zero_area_triangles": 0,
+      "bytes": 15129884,
+      "sha256": "23c99ccbd055cc24af89d35c15966dbf4ee3ab69b2a79fd6fe6fcffb9d9f4926"
+    },
+    "exports/print-plates/printPlate01Black.stl": {
+      "triangles": 6574,
+      "bounds_min_mm": [
+        5.0,
+        8.0,
+        -0.0
+      ],
+      "bounds_max_mm": [
+        250.0,
+        250.0,
+        175.0
+      ],
+      "dimensions_mm": [
+        245.0,
+        242.0,
+        175.0
+      ],
+      "connected_components_rounded_1e-5_mm": 6,
+      "boundary_edges": 0,
+      "edges_with_more_than_two_faces": 0,
+      "zero_area_triangles": 0,
+      "bytes": 328784,
+      "sha256": "6f1e90c65d57ddae098a7bf2b93bbde3b0b950a937b89b7270dc98ee88d951ef"
+    },
+    "exports/print-plates/printPlate02Black.stl": {
+      "triangles": 82036,
+      "bounds_min_mm": [
+        7.5,
+        3.0,
+        -0.0
+      ],
+      "bounds_max_mm": [
+        252.99998,
+        254.00002,
+        47.79943
+      ],
+      "dimensions_mm": [
+        245.49998,
+        251.00002,
+        47.79943
+      ],
+      "connected_components_rounded_1e-5_mm": 49,
+      "boundary_edges": 0,
+      "edges_with_more_than_two_faces": 0,
+      "zero_area_triangles": 0,
+      "bytes": 4101884,
+      "sha256": "8e1fecf45ee280c1f5b4e58b40226bdb744f0e8f41d46cce4d3cb0d6ce2568c9"
+    },
+    "exports/print-plates/printPlate03White.stl": {
+      "triangles": 16302,
+      "bounds_min_mm": [
+        88.61726,
+        88.61726,
+        0.0
+      ],
+      "bounds_max_mm": [
+        167.38274,
+        167.38274,
+        32.87179
+      ],
+      "dimensions_mm": [
+        78.76547,
+        78.76547,
+        32.87179
+      ],
+      "connected_components_rounded_1e-5_mm": 1,
+      "boundary_edges": 0,
+      "edges_with_more_than_two_faces": 0,
+      "zero_area_triangles": 0,
+      "bytes": 815184,
+      "sha256": "9c040f4679a92937b599deee196df2293341fc0f2d65b133e1608af397b611c6"
+    }
+  }
+}

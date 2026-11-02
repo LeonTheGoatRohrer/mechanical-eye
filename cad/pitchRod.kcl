@@ -1,0 +1,12 @@
+// Pitch parallelogram connecting rod
+// 60 mm pin pitch; parallel M3 shoulder joints, carried entirely on the yaw cradle.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+pitchRod = link(
+  pitch = 60mm,
+  width = 8mm,
+  thickness = 4mm,
+  boreDiameter = 4.3mm,
+)
+  |> appearance(color = "#29292D")

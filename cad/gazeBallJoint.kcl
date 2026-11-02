@@ -1,0 +1,31 @@
+// Assembled high-angle ball joint
+// Four reusable printed components and M3 fastener; mounting plate occupies x=10 to 14 mm.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import "gazeJointBall.kcl" as ballPart
+import "gazeBallSpacer.kcl" as spacerPart
+import boltedJoint from "hardwareSets.kcl"
+negativeSpacerBlank = clone(spacerPart)
+positiveSpacer = translate(spacerPart, x = 5.7mm, global = true)
+negativeSpacer = rotate(
+  negativeSpacerBlank,
+  axis = Z,
+  angle = 180deg,
+  global = true,
+)
+  |> translate(x = -5.7mm, global = true)
+boltSet = boltedJoint(
+  diameter = 3mm,
+  grip = 24mm,
+  length = 30mm,
+  acrossFlats = 5.5mm,
+  nutHeight = 2.4mm,
+)
+  |> rotate(axis = Y, angle = 90deg, global = true)
+  |> translate(x = -10mm, global = true)
+ballJointParts = [
+  ballPart,
+  positiveSpacer,
+  negativeSpacer,
+  boltSet
+]

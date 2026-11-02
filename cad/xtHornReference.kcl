@@ -1,0 +1,23 @@
+// XT double horn envelope UNVERIFIED
+// Illustrative hole pitch only; replace after inspecting the user's supplied hardware.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import link from "mechanismProfiles.kcl"
+import cylinder from "profiles.kcl"
+blank = link(
+  pitch = 24mm,
+  width = 7mm,
+  thickness = 2.5mm,
+  boreDiameter = 2.2mm,
+)
+  |> translate(x = -12mm, global = true)
+bore = cylinder(radiusValue = 1.7mm, height = 5mm)
+  |> translate(z = -1mm, global = true)
+boltA = cylinder(radiusValue = 1.1mm, height = 5mm)
+  |> translate(x = -8mm, z = -1mm, global = true)
+boltB = clone(boltA)
+  |> translate(x = 16mm, global = true)
+shaftSeat = cylinder(radiusValue = 3.1mm, height = 2mm)
+  |> translate(z = 1.5mm, global = true)
+xtHornReference = subtract([blank], tools = [bore, boltA, boltB, shaftSeat])
+  |> appearance(color = "#858B91")

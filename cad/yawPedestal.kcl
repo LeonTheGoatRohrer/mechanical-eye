@@ -1,0 +1,12 @@
+// Stationary yaw pedestal
+// Two through M4 fasteners carry the journal reaction into the base, independently of the servo.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import plate, cylinder from "profiles.kcl"
+blank = plate(width = 36mm, depth = 18mm, height = 56.5mm)
+boreA = cylinder(radiusValue = 2.2mm, height = 58.5mm)
+  |> translate(x = -10mm, z = -1mm, global = true)
+boreB = clone(boreA)
+  |> translate(x = 20mm, global = true)
+yawPedestal = subtract([blank], tools = [boreA, boreB])
+  |> appearance(color = "#252529")

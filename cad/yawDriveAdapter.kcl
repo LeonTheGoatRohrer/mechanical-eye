@@ -1,0 +1,7 @@
+// Yaw original-horn adapter
+// Parallelogram output at local 20,16 mm; pitch between ball centres is 75 mm.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import hornAdapter from "gazeAdapterProfiles.kcl"
+import hornHoleRadiusUnverified from "assemblyParameters.kcl"
+yawDriveAdapter = hornAdapter(reach = sqrt(656_) * 1mm, phase = atan2(y = 16mm, x = 20mm), hornRadius = hornHoleRadiusUnverified)

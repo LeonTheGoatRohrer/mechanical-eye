@@ -1,0 +1,79 @@
+// Open-backed white globe
+// Smooth R40 exterior; rear-access blind screw bosses and unchanged concealed pupil mount.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+outerRadius = 40mm
+innerRadius = 38.2mm
+rearPlane = 7mm
+pupilBoreRadius = 3.2mm
+mountPilotRadius = 0.85mm
+mountBlindDepth = 5mm
+shellProfile = sketch(on = XY) {
+  outerArc = arc(start = [var 39.87mm, var 3.2mm], end = [var 7mm, var 39.38mm], center = [var 0mm, var 0mm])
+  rearEdge = line(start = [var 7mm, var 39.38mm], end = [var 7mm, var 37.55mm])
+  innerArc = arc(
+    start = [var 7mm, var 37.55mm],
+    end = [var 38.07mm, var 3.2mm],
+    center = [var 0mm, var 0mm],
+    direction = CW,
+  )
+  pupilEdge = line(start = [var 38.07mm, var 3.2mm], end = [var 39.87mm, var 3.2mm])
+  coincident([outerArc.center, ORIGIN])
+  coincident([innerArc.center, outerArc.center])
+  radius(outerArc) == outerRadius
+  radius(innerArc) == innerRadius
+  horizontalDistance([ORIGIN, outerArc.end]) == rearPlane
+  horizontalDistance([ORIGIN, innerArc.start]) == rearPlane
+  verticalDistance([ORIGIN, outerArc.start]) == pupilBoreRadius
+  verticalDistance([ORIGIN, innerArc.end]) == pupilBoreRadius
+  coincident([outerArc.end, rearEdge.start])
+  coincident([rearEdge.end, innerArc.start])
+  coincident([innerArc.end, pupilEdge.start])
+  coincident([pupilEdge.end, outerArc.start])
+}
+shell = revolve(
+  region(
+    segments = [
+      shellProfile.outerArc,
+      shellProfile.rearEdge
+    ],
+    intersectionIndex = -1,
+    direction = CCW,
+  ),
+  axis = X,
+  angle = 360deg,
+)
+  |> rotate(axis = Z, angle = -90deg, global = true)
+hide(shellProfile)
+bossA = cylinder(radiusValue = 2.8mm, height = 6mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = -28mm,
+       y = -18mm,
+       z = -8mm,
+       global = true,
+     )
+bossB = clone(bossA)
+  |> translate(x = 56mm, global = true)
+bossC = clone(bossA)
+  |> translate(z = 16mm, global = true)
+bossD = clone(bossA)
+  |> translate(x = 56mm, z = 16mm, global = true)
+blank = union([shell, bossA, bossB, bossC, bossD])
+boreA = cylinder(radiusValue = mountPilotRadius, height = mountBlindDepth + 1mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = -28mm,
+       y = -17mm,
+       z = -8mm,
+       global = true,
+     )
+boreB = clone(boreA)
+  |> translate(x = 56mm, global = true)
+boreC = clone(boreA)
+  |> translate(z = 16mm, global = true)
+boreD = clone(boreA)
+  |> translate(x = 56mm, z = 16mm, global = true)
+eyeFront = subtract([blank], tools = [boreA, boreB, boreC, boreD])
+  |> appearance(color = "#F7F7F2")

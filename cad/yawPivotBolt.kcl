@@ -1,0 +1,12 @@
+// Yaw shoulder axle reference
+// Six-mm shoulder with 0.3 mm axial running allowance; purchased size and locking method require confirmation.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import cylinder from "profiles.kcl"
+shoulder = cylinder(radiusValue = 3mm, height = 13.3mm)
+thread = cylinder(radiusValue = 2mm, height = 6.1mm)
+  |> translate(z = 13.2mm, global = true)
+head = cylinder(radiusValue = 5mm, height = 4.1mm)
+  |> translate(z = -4mm, global = true)
+yawPivotBolt = union([shoulder, thread, head])
+  |> appearance(color = "#92989D")

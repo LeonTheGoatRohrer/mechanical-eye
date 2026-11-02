@@ -1,0 +1,6 @@
+// Lower eyelid crank
+// 36 mm output radius and a separate linkage plane.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import lidHub from "lidHubProfiles.kcl"
+lowerLidHub = lidHub(armRadius = 36mm, armAngle = -103deg)
