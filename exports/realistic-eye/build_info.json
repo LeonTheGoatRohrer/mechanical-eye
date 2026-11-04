@@ -1,0 +1,27 @@
+{
+  "units": "mm",
+  "placement": "same as cad/printPlate03White.kcl (centre X/Y 128, rear rim on Z 0, front up)",
+  "colour_change_plate_z_mm": 28.0,
+  "visible_black_diameter_mm": 38.73,
+  "iris_recess_diameter_mm": 37.7,
+  "pupil_diameter_mm": 12.8,
+  "pupil_depth_below_sphere_mm": 3.18,
+  "lowest_iris_floor_above_split_mm": 0.281,
+  "pupil_floor_above_split_mm": 1.3,
+  "max_radius_from_eye_centre_mm": 40.0,
+  "volumes_mm3": {
+    "realisticEye_weiss.stl": 12880.8,
+    "realisticEye_schwarz.stl": 1924.9,
+    "realisticEye_komplett.stl": 14805.7
+  },
+  "triangles": {
+    "realisticEye_weiss.stl": 94616,
+    "realisticEye_schwarz.stl": 195246,
+    "realisticEye_komplett.stl": 289936
+  },
+  "genus": {
+    "realisticEye_weiss.stl": 1,
+    "realisticEye_schwarz.stl": 0,
+    "realisticEye_komplett.stl": 0
+  }
+}

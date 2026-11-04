@@ -13,6 +13,8 @@ Drei kompakte, farbgetrennte CAD-Anordnungen für 256 × 256 × 256 mm. Keine ma
 
 Nicht drucken: Servoreferenzen, Originalhörner, Schrauben, Muttern, Schulterachsen, metallische Unterleg-/Passscheiben einschließlich der 0.1- und 0.5-mm-Scheiben. Diese Kaufteile bleiben für die Montage erforderlich. Nicht enthalten: Testcoupon/Testzapfen, alte Studien, alte Modulgrundplatten/24-mm-Hülsen, entfernte Frontwand/Pfosten und hintere Augenschale. BOM.csv ist weiterhin die historische Phase-A-Liste, NICHT die aktuelle Druckstückliste.
 
+Alternative zu Platte 3: realistischer Augapfel mit integrierter schwarzer Iris/Pupille, gleiche Maße und Befestigung, Filamentwechsel bei Z = 28,0 mm. Ersetzt die weiße Schale und die separate Pupille von Platte 2. Siehe [REALISTISCHES_AUGE.md](REALISTISCHES_AUGE.md).
+
 ## Vor dem Start im Slicer
 - STL in Millimetern importieren; Kontrollmaß Grundplatte 244 × 164 × 6 mm. Nicht skalieren.
 - Je STL eine Platte; bei Bedarf in einzelne Objekte zerlegen und Anordnung zunächst beibehalten. Druckreihenfolge nach Schichten, keine ungeprüfte sequenzielle Einzelobjekt-Reihenfolge.

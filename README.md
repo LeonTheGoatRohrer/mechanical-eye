@@ -22,6 +22,12 @@ Die Bilder führen zu den jeweiligen STL-Dateien. Insgesamt **56 Druckteile** f�
 
 Platte 1 und 2 stammen aus vorhandenen STL-Exporten. Platte 3 wurde aus der eindeutig identifizierten weißen Schale des vorhandenen Assembly-OBJ gewonnen und entsprechend ihrer KCL-Datei ausgerichtet; die Dreiecksgeometrie wurde beibehalten. Details und Dateiprüfungen: [PUBLICATION_CHECKS.md](PUBLICATION_CHECKS.md).
 
+## Neu: realistischer Augapfel (Weiß + Schwarz)
+
+[![Neuer Augapfel mit Iris und Pupille, eingebaut](previews/realistic-eye.png)](docs/REALISTISCHES_AUGE.md)
+
+Gleiche Maße und Befestigung wie die weiße Schale von Platte 3, aber mit integrierter schwarzer Iris (Fasern, Krause, Krypten) und 3,2 mm tiefer Pupille. Druck mit Mehrfarbsystem oder mit einem Filamentwechsel auf Schwarz bei **Z = 28,0 mm**. Die separate Pupille entfällt. STL-Dateien, Druckanleitung und Prüfung: [docs/REALISTISCHES_AUGE.md](docs/REALISTISCHES_AUGE.md).
+
 ## CAD und Montage
 
 Den gesamten Ordner [cad](cad) lokal öffnen; [project.toml](cad/project.toml) verwendet `main.kcl` als Einstieg. Alle lokal importierten KCL-Module sind enthalten. Für eine einzelne Druckplatte deren KCL-Datei öffnen.
