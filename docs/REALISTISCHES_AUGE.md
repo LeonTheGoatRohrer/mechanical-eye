@@ -39,6 +39,16 @@ Alle STL in **Millimetern**, gleiche Lage wie `printPlate03White.stl`: Mitte X/Y
 2. Im Schichtvorschau-Regler einen **Farbwechsel/M600 bei Z = 28,0 mm** einfügen: auf die erste Schicht oberhalb von 28,0 mm (bei 0,2 mm Schichthöhe die Schicht „28,2“).
 3. Ab dort schwarz weiterdrucken. Alle Vertiefungen der Iris enden mindestens 0,28 mm über der Wechselhöhe; ein Versatz um eine Schicht zeigt daher kein Weiß, nur der Irisrand wandert um ca. 0,2 mm.
 
+### Material
+Weiß und Schwarz aus **demselben Material** drucken, am besten beides PLA. Die schwarze Iris liegt nur auf einer waagrechten Ringfläche auf dem Weiß. **Schwarzes PETG auf weißem PLA haftet schlecht** (genau deshalb nimmt man diese Kombination sonst als Stützen-Trennschicht), die Iris könnte sich ablösen.
+
+### Bambu Lab P1S (Bambu Studio)
+- Mit AMS: beide STL gleichzeitig ins Fenster ziehen → „als ein Objekt mit mehreren Teilen“ → Ja. Falls die Frage nicht kommt: Weiß laden, Rechtsklick auf das Objekt → Teil hinzufügen → Laden → Schwarz. Dem Teil „schwarz“ in der Objektliste den schwarzen AMS-Slot zuweisen.
+- Ohne AMS: `realisticEye_komplett.stl` laden, slicen, in der Vorschau den Schichtregler auf die erste Schicht über 28,0 mm stellen, Rechtsklick → **Pause hinzufügen**. Bei der Pause am Drucker Filament entladen, schwarzes PLA laden, so lange extrudieren, bis es sauber schwarz kommt, Düse abwischen, fortsetzen.
+- Rechtsklick auf das Objekt → Höhenbereich-Modifikator 27 mm bis oben mit 0,1 mm Schichthöhe.
+- Stützen an, Typ Baum (automatisch), „nur auf der Druckplatte“.
+- Bei PLA im P1S Tür oder Deckel einen Spalt offen lassen (gegen Hitzestau).
+
 ### Einstellungen für beide Varianten
 - Ab ca. Z = 27 mm **0,08–0,12 mm Schichthöhe** (Höhenbereich-Modifier oder variable Schichthöhe), damit das feine Iris-Relief erhalten bleibt. Darunter normal (z. B. 0,2 mm).
 - 0,4-mm-Düse, Wandgenerator Arachne, kein Bügeln (Ironing) auf der Iris.
